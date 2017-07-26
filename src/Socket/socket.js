@@ -3,7 +3,7 @@
 import {Socket} from "phoenix"
 
 // FIXME THE URL SHOULD BE DRAWN FROM ENV
-let socket = new Socket("ws://localhost:4000/socket", {params: {token: window.userToken}})
+let socket = new Socket(`${process.env.REACT_APP_BACKEND_API_WS}`, {params: {token: window.userToken}})
 
 // When you connect, you'll often need to authenticate the client.
 // For example, imagine you have an authentication plug, `MyAuth`,
