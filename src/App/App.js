@@ -51,7 +51,7 @@ class App extends Component {
   }
   render() {
     return (
-      <Router>
+      <Router basename="/a_thousand_words_web" >
         <div id="appContainer">
           <Route path="/" component={Nav}/>
           <div className="container" id="contentContainer">
