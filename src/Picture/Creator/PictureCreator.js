@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PictureCreatorForm from './PictureCreatorForm.js';
 import Picture from '../Picture.js';
-import PictureChannel from '../../Socket/pictureChannel.js';
-import PictureParamsDecoder from '../../Encoders/Picture/ParamsDecoder.js';
+import PictureApi from '../../Api/PictureApi.js';
 import './PictureCreator.css';
 
 class PictureCreator extends Component {
@@ -18,22 +17,14 @@ class PictureCreator extends Component {
     this.dismissModal = this.dismissModal.bind(this);
     this.resetView = this.resetView.bind(this);
   }
-  handleFormSubmit(formParams){
-    PictureChannel.createPicture(this.props.channel, formParams)
-      .then(createdPicture => {
-        this.setState({
-          displayForm: false,
-          isModalVisible: true,
-          activePicture: PictureParamsDecoder.decode(createdPicture)
-        })
-      })
-      .catch(err => {
-        console.log("ERROR CREATING PICTURE!")
-        this.setState({
-          displayForm: true,
-          activePicture: null
-        })
-      })
+  async handleFormSubmit(formParams){
+    let res = await PictureApi.postNewPicture(formParams)
+    this.setState({
+      displayForm: false,
+      isModalVisible: true,
+      activePicture: res
+    })
+    console.log(res)
   }
   dismissModal(){
     this.setState({
