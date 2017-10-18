@@ -12,7 +12,7 @@ import './App.css';
 
 // Import other helper modules
 import PictureChannel from '../Socket/pictureChannel.js';
-import PicParamsDecoder from '../Encoders/Picture/ParamsDecoder.js';
+import PictureApi from '../Api/PictureApi.js';
 
 class App extends Component {
   constructor(props){
@@ -23,30 +23,10 @@ class App extends Component {
       pictureList: []
     }
   }
-  componentDidMount(){
-    PictureChannel.listPictures(this.state.channel)
-      .then(pics => {
-        let decodedPics = pics.map((pic) => { return PicParamsDecoder.decode(pic)})
-        this.setState({pictureList: decodedPics})
-    })
-    // any updates from the channel will trigger a re-render of every child component for now...
-    this.state.channel.on("picture_created", resp => {
-      console.log("received picture created message", resp)
-      this.setState({
-        pictureList: resp.pictures
-      })
-    })
-    this.state.channel.on("picture_deleted", resp => {
-      console.log("received picture deleted message", resp)
-      this.setState({
-        pictureList: resp.pictures
-      })
-    })
-    this.state.channel.on("picture_updated", resp => {
-      console.log("received picture updated message", resp)
-      this.setState({
-        pictureList: resp.pictures
-      })
+  async componentDidMount(){
+    let pics = await PictureApi.getAllPictures();
+    this.setState({
+      pictureList: pics
     })
   }
   render() {
