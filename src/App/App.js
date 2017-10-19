@@ -3,14 +3,14 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import 'milligram';
 
+// Import the API client
+import PictureApi from '../Api/PictureApi.js';
+
 // Import components and styles
 import Nav from './Nav/Nav.js';
 import PictureMap from '../Map/PictureMap.js';
 import PictureCreator from '../Picture/Creator/PictureCreator.js';
 import './App.css';
-
-// Import other helper modules
-import PictureApi from '../Api/PictureApi.js';
 
 class App extends Component {
   constructor(props){
@@ -33,7 +33,21 @@ class App extends Component {
           <div className="container" id="contentContainer">
             <Route 
               exact path="/pictures" 
-              render={(props) => { return <PictureMap pictureList={this.state.pictureList} />}}
+              render={({ location }) => { 
+                let shouldRenderPic = false;
+                let activePic = {};
+                if (location.state) {
+                  shouldRenderPic = true;
+                  activePic = location.state.activePic
+                }
+                return (
+                  <PictureMap 
+                    pictureList={this.state.pictureList}
+                    renderWithPictureActive={shouldRenderPic} 
+                    activePicture={activePic}
+                  />
+                );
+              }}
             />
             <Route 
               exact path="/pictures/new"

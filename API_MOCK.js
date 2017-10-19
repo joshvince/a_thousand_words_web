@@ -8,7 +8,7 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
-}); // TEMPORARILY ALLOW CORS IN DEV
+}); 
 
 app.get('/', function (req, res) {
   res.send('Hello World!')
@@ -19,7 +19,7 @@ app.get('/api', function (req, res) {
 })
 
 // test picture data
-var PICTURES = [
+var ALLPICTURES = [
   {
     year: 2010,
     name: "My first pic",
@@ -39,15 +39,25 @@ var PICTURES = [
     }
   }
 ]
+
 app.get('/api/pictures', function (req, res) {
-  res.json(PICTURES)
+  res.json(ALLPICTURES)
 })
 
-// right now, just send back the first fake picture
+var NEWPICTURE = {
+  year: 2008,
+  name: "YOUR NEW PICTURE",
+  description: "CAGE mofo",
+  image: "http://overmental.com/wp-content/uploads/2015/03/nic-cage-face.png",
+  location: {
+    coordinates: [51.29366510461659, -0.007704632002884182]
+  }
+}
+// right now, just send back a fake picture
 app.post('/api/pictures/new', function(req, res) {
-  res.send(PICTURES[0])
+  res.send(NEWPICTURE)
 })
 
 app.listen(3001, function () {
-  console.log('Example app listening on port 3001!')
+  console.log('ATW API MOCK listening on port 3001!')
 })

@@ -9,9 +9,17 @@ import googleMapStyles from './MapStyles.json';
 class PictureMap extends Component {
   constructor(props){
     super(props)
-    this.state = {
-      pictureActive: false,
-      activePicture: {}
+    if (this.props.renderWithPictureActive) {
+      this.state = {
+        pictureActive: true,
+        activePicture: this.props.activePicture
+      }
+    }
+    else {
+      this.state = {
+        pictureActive: false,
+        activePicture: {}
+      }
     }
     this.setActivePicture = this.setActivePicture.bind(this);
     this.removeActivePicture = this.removeActivePicture.bind(this);

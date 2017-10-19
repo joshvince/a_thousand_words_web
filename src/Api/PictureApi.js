@@ -5,14 +5,18 @@ async function getAllPictures() {
   return await res.json()
 }
 
-//FIXME: This function basically does nothing right now. 
-// The Mock API is set up to simply return a stock picture as JSON all the time
+//FIXME: The Mock API is set up to simply return a stock picture as JSON all the time
 async function postNewPicture(data){
   const res = await fetch('http://localhost:3001/api/pictures/new', {
     method: "POST",
     body: data
   })
-  return await res.json()
+  const json = await res.json();
+  const response = {
+    status: res.status,
+    json: json
+  }
+  return response
 }
 
 const PictureApi = {
