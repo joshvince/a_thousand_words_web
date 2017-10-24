@@ -2,6 +2,11 @@
   padding-top: 3rem;
 }
 
+.section {
+  padding: 2rem;
+  border-bottom: grey 1px solid;
+}
+
 #submit-button {
   margin: 3rem;
   width: 50%;
