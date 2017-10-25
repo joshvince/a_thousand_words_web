@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import LocationSelector from '../../Map/LocationSelector.js';
+// import LocationSelector from '../../Map/LocationSelector.js';
+import LocationSelector from './LocationSelector/LocationSelector.js';
 import ParamsEncoder from '../../Encoders/Picture/ParamsEncoder.js';
+
+import './PictureCreator.css';
 
 class PictureCreatorForm extends Component {
   constructor(props){
@@ -54,7 +57,7 @@ class PictureCreatorForm extends Component {
     reader.readAsDataURL(file)
   }
   requiredFieldsPresent(state){
-    return state.name.length > 1 && state.year > 1801 && state.image.hasOwnProperty("filename");
+    return state.name.length > 1 && state.image.hasOwnProperty("filename");
   }
   handleFormSubmission(e){
     e.preventDefault()
@@ -65,20 +68,37 @@ class PictureCreatorForm extends Component {
     let ready = !this.requiredFieldsPresent(this.state)
     return (
       <div>
-        <h3>A picture is worth a thousand words.</h3>
+        <h2>Upload a new picture.</h2>
         <form onSubmit={this.handleFormSubmission}>
           <fieldset>
-          <label htmlFor="image">Image *</label>
-          <input id="userImg" type="file" name="image" accept="image/*" onChange={this.onFileSelect}/>  
-          <label htmlFor="name">Name *</label>
-          <input type="text" value={this.state.name} name="name" onChange={this.handleInputChange}/>
-          <label htmlFor="description">Description</label>
-          <textarea type="text" value={this.state.description} name="description" onChange={this.handleInputChange}/>
-          <label htmlFor="year">Year *</label>
-          <input type="number" value={this.state.year} name="year" onChange={this.handleInputChange}/>
-          <label htmlFor="location">Location</label>
-          <LocationSelector onLocationChange={this.setLocation}/>
-          <input id="submit-button" className="button-primary" type="submit" value="Create" disabled={ready}/>
+            <div className="section">
+              <h3>The Front</h3>
+              <label htmlFor="image">Image</label>
+              <input  id="userImg" type="file" name="image" 
+                      accept="image/*" onChange={this.onFileSelect}/> 
+            </div> 
+            <div className="section">
+              <h3>The Back</h3>
+              <label htmlFor="name">Name</label>
+              <input  type="text" value={this.state.name} 
+                      placeholder="Give this picture a name" name="name" 
+                      onChange={this.handleInputChange}/>
+              <label htmlFor="description">Description</label>
+              <textarea type="text" value={this.state.description}
+                        placeholder="Write a description of this picture: who is in it? What does it show?" 
+                        name="description" onChange={this.handleInputChange}/>
+            </div>
+            <div className="section">
+              <h3>The Rest</h3>
+              <label htmlFor="year">Year</label>
+              <input  type="number" value={this.state.year} 
+                      placeholder="This picture was taken in"
+                      name="year" onChange={this.handleInputChange}/>
+              <label htmlFor="location">Location</label>
+              <LocationSelector onLocationChange={this.setLocation}/>
+            </div>
+          <input  id="submit-button" className="button-primary" 
+                  type="submit" value="Create" disabled={ready}/>
           </fieldset>
         </form>   
       </div>

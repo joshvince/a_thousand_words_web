@@ -1,0 +1,49 @@
+.option-tile {
+  height: 16rem;
+  width: 16rem;
+  padding: 1rem;
+  margin: 1rem;
+  border: 1px #1B9AAA solid;
+  border-radius: 1rem;
+  cursor: default;
+}
+
+.active {
+  background: #033F63;
+  color: white;
+}
+
+.flex-center-row, .column .flex-center-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-center-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#mapContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#mapContainer > div {
+  max-width: 90%;
+}
+
+/* The map should be limited in width on larger screens */
+
+@media (min-width: 768px) {
+  #mapContainer > div {
+    max-width: 70%;
+  }
+}
+
+.loader {
+  padding: 4rem;
+  font-size: 3rem;
+}
