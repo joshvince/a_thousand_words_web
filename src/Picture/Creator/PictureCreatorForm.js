@@ -57,7 +57,7 @@ class PictureCreatorForm extends Component {
     reader.readAsDataURL(file)
   }
   requiredFieldsPresent(state){
-    return state.name.length > 1 && state.year > 1801 && state.image.hasOwnProperty("filename");
+    return state.name.length > 1 && state.image.hasOwnProperty("filename");
   }
   handleFormSubmission(e){
     e.preventDefault()

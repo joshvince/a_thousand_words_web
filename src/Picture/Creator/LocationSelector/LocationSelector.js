@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Modal from '../../../App/Modal/Modal.js';
 import LocationOption from './LocationOption.js';
 import MapSelector from './MapSelector.js';
+import GeoLocator from './GeoLocator.js';
 import './LocationSelector.css';
 
 class LocationSelector extends Component {
@@ -13,7 +13,6 @@ class LocationSelector extends Component {
       isGeo: false
     }
     this.onOptionSelect = this.onOptionSelect.bind(this);
-    this.toggleModal = this.toggleModal.bind(this);
   }
   onOptionSelect(opt){
     if (opt === "unknown") {
@@ -24,7 +23,6 @@ class LocationSelector extends Component {
     }
     else if (opt === "select") {
       this.setState({
-        modalOpen: true,
         isUnknown: false,
         isGeo: false
       })
@@ -36,16 +34,12 @@ class LocationSelector extends Component {
       })
     }
   }
-  toggleModal(){
-    let newVal = !this.state.modalOpen
-    this.setState({
-      modalOpen: newVal
-    })
-  }
   render() {
     let unknownClass = this.state.isUnknown ? "active" : "";
     let selectClass = (!this.state.isGeo && !this.state.isUnknown) ? "active" : "";
     let geoClass = this.state.isGeo ? "active" : "";
+    let shouldMapDisplay = (!this.state.isGeo && !this.state.isUnknown)
+    let shouldGeoDisplay = this.state.isGeo
     return (
       <div>
         <div className="row">
@@ -68,15 +62,13 @@ class LocationSelector extends Component {
             text="This picture was taken where I am right now"
           />  
         </div>
-        {
-          !this.state.modalOpen ? null :
-            <Modal 
-              dismissAction={e => this.toggleModal()} 
-              children={
-                <MapSelector />
-              } 
-            />
-         }
+        { shouldMapDisplay ? 
+          <MapSelector 
+            onLocationChange={this.props.onLocationChange}
+            withActivePin={false}
+          /> 
+            : null} 
+        { shouldGeoDisplay ? <GeoLocator onLocationChange={this.props.onLocationChange}/> : null}
       </div>
     );
   }

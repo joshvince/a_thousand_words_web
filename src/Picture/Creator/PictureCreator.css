@@ -17,13 +17,16 @@
   font-family: 'Merriweather', serif;
 }
 
-input[type='text'], textarea, input[type='number'] {
+input[type='text']{
   max-width: 90%;
 }
 
 /* The input fields should be limited in width on larger screens */
 @media (min-width: 768px) {
-  input[type='text'], textarea, input[type='number'] {
+  input[type='text'], textarea{
     max-width: 70%;
   } 
+  input[type='number'] {
+    max-width: 30%;
+  }
 }
