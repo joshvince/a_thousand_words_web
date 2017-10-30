@@ -35,3 +35,16 @@ input[type='submit']:hover {
    background-color: #033F63;
    border: 0.1rem solid #033F63;
  }
+
+ /* Error Styles */
+
+ .error-message {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  z-index: 999;
+  height: 7rem;
+  padding: 2rem;
+  background-color: red;
+  color: white;
+ }

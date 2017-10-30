@@ -1,15 +1,20 @@
 /* CRUD operations for pictures */
 
 async function getAllPictures() { 
-  const res = await fetch('http://localhost:3001/api/pictures', {accept: 'application/json'})
+  const res = await fetch('http://localhost:3001/pictures/all', {
+    accept: 'application/json'
+  })
   return await res.json()
 }
 
-//FIXME: The Mock API is set up to simply return a stock picture as JSON all the time
 async function postNewPicture(data){
-  const res = await fetch('http://localhost:3001/api/pictures/new', {
+  const res = await fetch('http://localhost:3001/pictures/new', {
     method: "POST",
-    body: data
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
   })
   const json = await res.json();
   const response = {

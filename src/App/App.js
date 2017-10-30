@@ -20,9 +20,10 @@ class App extends Component {
     }
   }
   async componentDidMount(){
-    let pics = await PictureApi.getAllPictures();
+    let apiResponse = await PictureApi.getAllPictures();
     this.setState({
-      pictureList: pics
+      pictureList: apiResponse.Items,
+      totalPictures: apiResponse.Count
     })
   }
   render() {

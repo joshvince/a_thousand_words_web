@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import PictureCreatorForm from './PictureCreatorForm.js';
+import ErrorMessage from '../../App/Error/ErrorMessage.js';
 import './PictureCreator.css';
 
 import PictureApi from '../../Api/PictureApi.js';
@@ -9,6 +10,7 @@ class PictureCreator extends Component {
   constructor(props){
     super(props)
     this.state = {
+      displayError: false,
       fireRedirect: false,
       addedPicture: {}
     }
@@ -16,20 +18,24 @@ class PictureCreator extends Component {
   }
   async handleFormSubmit(formParams){
     let res = await PictureApi.postNewPicture(formParams)
-    if (res.status === 200) {
+    if (res.status === 201) {
       this.setState({
         fireRedirect: true,
         addedPicture: res.json
       })
     }
     else {
-      //TODO: display an error
+      this.setState({displayError: true})
     }
-    console.log(res)
   }
   render() {
     return (
       <div className="column" id="picture-creator">
+        {this.state.displayError && (
+          <ErrorMessage 
+            message="There was a problem with saving your picture. Refresh and try again"
+          />
+        )}
         <PictureCreatorForm submissionHandler={this.handleFormSubmit} /> 
         {this.state.fireRedirect && (
           <Redirect to={{
