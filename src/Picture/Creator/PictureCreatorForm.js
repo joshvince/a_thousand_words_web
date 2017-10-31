@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-// import LocationSelector from '../../Map/LocationSelector.js';
 import LocationSelector from './LocationSelector/LocationSelector.js';
 import ParamsEncoder from '../../Encoders/Picture/ParamsEncoder.js';
+import ImageUploader from '../../Api/ImageUploader.js';
 
 import './PictureCreator.css';
 
@@ -38,23 +38,34 @@ class PictureCreatorForm extends Component {
       location: locationParams
     })
   }
+  // onFileSelect(){
+  //   // grab the file from the form
+  //   let fileInput = document.getElementById("userImg");
+  //   let file = fileInput.files[0];
+  //   // create a new FileReader to handle the binary
+  //   let reader = new FileReader();
+  //   // on the load event, create a payload featuring the binary and add to the state
+  //   reader.addEventListener("load", () => {
+  //     let payload = {
+  //       binary: reader.result.split(",", 2)[1],
+  //       filename: file.name
+  //     }
+  //     this.setState({
+  //       image: payload
+  //     })
+  //   }, false)
+  //   reader.readAsDataURL(file)
+  // }
   onFileSelect(){
     // grab the file from the form
     let fileInput = document.getElementById("userImg");
     let file = fileInput.files[0];
-    // create a new FileReader to handle the binary
-    let reader = new FileReader();
-    // on the load event, create a payload featuring the binary and add to the state
-    reader.addEventListener("load", () => {
-      let payload = {
-        binary: reader.result.split(",", 2)[1],
-        filename: file.name
-      }
-      this.setState({
-        image: payload
-      })
-    }, false)
-    reader.readAsDataURL(file)
+    if (file == null) {
+      alert(`No File Selected`)
+    }
+    else {
+      ImageUploader(file)
+    }
   }
   requiredFieldsPresent(state){
     return state.name.length > 1 && state.image.hasOwnProperty("filename");
