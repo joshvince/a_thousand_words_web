@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import LocationSelector from './LocationSelector/LocationSelector.js';
 import ParamsEncoder from '../../Encoders/Picture/ParamsEncoder.js';
-import ImageUploader from '../../Api/ImageUploader.js';
+import PictureApi from '../../Api/PictureApi.js';
 
 import './PictureCreator.css';
 
@@ -10,14 +10,12 @@ class PictureCreatorForm extends Component {
     super(props)
     this.state = {
       name: "",
-      image: {},
       description: "",
       year: "",
       location: "unknown"
     }
     this.handleInputChange = this.handleInputChange.bind(this);
     this.setLocation = this.setLocation.bind(this);
-    this.onFileSelect = this.onFileSelect.bind(this);
     this.requiredFieldsPresent = this.requiredFieldsPresent.bind(this);
     this.handleFormSubmission = this.handleFormSubmission.bind(this);
   }
@@ -38,37 +36,8 @@ class PictureCreatorForm extends Component {
       location: locationParams
     })
   }
-  // onFileSelect(){
-  //   // grab the file from the form
-  //   let fileInput = document.getElementById("userImg");
-  //   let file = fileInput.files[0];
-  //   // create a new FileReader to handle the binary
-  //   let reader = new FileReader();
-  //   // on the load event, create a payload featuring the binary and add to the state
-  //   reader.addEventListener("load", () => {
-  //     let payload = {
-  //       binary: reader.result.split(",", 2)[1],
-  //       filename: file.name
-  //     }
-  //     this.setState({
-  //       image: payload
-  //     })
-  //   }, false)
-  //   reader.readAsDataURL(file)
-  // }
-  onFileSelect(){
-    // grab the file from the form
-    let fileInput = document.getElementById("userImg");
-    let file = fileInput.files[0];
-    if (file == null) {
-      alert(`No File Selected`)
-    }
-    else {
-      ImageUploader(file)
-    }
-  }
   requiredFieldsPresent(state){
-    return state.name.length > 1 && state.image.hasOwnProperty("filename");
+    return state.name.length > 1;
   }
   handleFormSubmission(e){
     e.preventDefault()
@@ -86,7 +55,7 @@ class PictureCreatorForm extends Component {
               <h3>The Front</h3>
               <label htmlFor="image">Image</label>
               <input  id="userImg" type="file" name="image" 
-                      accept="image/*" onChange={this.onFileSelect}/> 
+                      accept="image/*"/> 
             </div> 
             <div className="section">
               <h3>The Back</h3>
