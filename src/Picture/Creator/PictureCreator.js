@@ -17,15 +17,28 @@ class PictureCreator extends Component {
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
   async handleFormSubmit(formParams){
-    let res = await PictureApi.postNewPicture(formParams)
-    if (res.status === 201) {
-      this.setState({
-        fireRedirect: true,
-        addedPicture: res.json
-      })
+    let fileInput = document.getElementById("userImg");
+    let file = fileInput.files[0];
+    if (file == null) {
+      alert(`No File Selected`)
     }
     else {
-      this.setState({displayError: true})
+      let uploadedImg = await PictureApi.uploadImage(file);
+      let fullParams = {
+        ...formParams,
+        image: uploadedImg.url,
+        uuid: uploadedImg.uuid
+      };
+      let res = await PictureApi.postNewPicture(fullParams)
+      if (res.status === 201) {
+        this.setState({
+          fireRedirect: true,
+          addedPicture: res.json
+        })
+      }
+      else {
+        this.setState({displayError: true})
+      }
     }
   }
   render() {
