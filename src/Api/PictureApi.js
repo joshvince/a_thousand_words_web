@@ -8,6 +8,14 @@ async function getAllPictures() {
   return await res.json()
 }
 
+async function getPicturesFromUser(userId) {
+  const url = `http://localhost:3001/pictures?user-id=${userId}`;
+  const res = await fetch(url, {
+    accept: 'application/json'
+  })
+  return await res.json()
+}
+
 async function postNewPicture(data){
   const res = await fetch('http://localhost:3001/pictures/new', {
     method: "POST",
@@ -87,6 +95,7 @@ function buildFileName(filename, uuid) {
 }
 
 const PictureApi = {
+  getPicturesFromUser: getPicturesFromUser,
   getAllPictures: getAllPictures,
   postNewPicture: postNewPicture,
   uploadImage: uploadImage

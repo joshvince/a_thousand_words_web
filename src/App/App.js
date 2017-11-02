@@ -34,7 +34,7 @@ class App extends Component {
         currentUser: storedUser
       })
     }
-    this.updateWithPictures()
+    this.updateWithPictures(storedUser.id)
   }
   signInHandler(newUser){
     UserStorage.setCurrentUser(newUser);
@@ -42,6 +42,7 @@ class App extends Component {
       signedIn: true,
       currentUser: newUser
     })
+    this.updateWithPictures(newUser.id)
   }
   signOutHandler(){
     UserStorage.removeCurrentUser();
@@ -50,8 +51,8 @@ class App extends Component {
       currentUser: null
     })
   }
-  updateWithPictures(){
-    PictureApi.getAllPictures().then(apiResponse => {
+  updateWithPictures(userId){
+    PictureApi.getPicturesFromUser(userId).then(apiResponse => {
       this.setState({
         pictureList: apiResponse.Items,
         totalPictures: apiResponse.Count
@@ -109,7 +110,7 @@ class App extends Component {
             />
             <Route 
               exact path="/pictures/new"
-              render={(props) => { return <PictureCreator/>}}
+              render={(props) => { return <PictureCreator currentUser={this.state.currentUser}/>}}
             />
             <Route
               exact path="/signin"

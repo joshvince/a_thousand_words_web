@@ -27,7 +27,8 @@ class PictureCreator extends Component {
       let fullParams = {
         ...formParams,
         image: uploadedImg.url,
-        uuid: uploadedImg.uuid
+        uuid: uploadedImg.uuid,
+        userId: this.props.currentUser.id
       };
       let res = await PictureApi.postNewPicture(fullParams)
       if (res.status === 201) {
