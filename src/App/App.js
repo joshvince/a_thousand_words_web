@@ -3,11 +3,13 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import 'milligram';
 
-// Import the API client
+// Import the API clients and other helper modules
 import PictureApi from '../Api/PictureApi.js';
+import UserStorage from '../User/UserStorage.js';
 
 // Import components and styles
 import Nav from './Nav/Nav.js';
+import SignIn from './User/SignIn.js';
 import PictureMap from '../Map/PictureMap.js';
 import PictureCreator from '../Picture/Creator/PictureCreator.js';
 import './App.css';
@@ -16,22 +18,77 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state = {
-      pictureList: []
+      pictureList: [],
+      signedIn: false,
+      currentUser: null
     }
+    this.updateWithPictures = this.updateWithPictures.bind(this);
+    this.signInHandler = this.signInHandler.bind(this);
+    this.signOutHandler = this.signOutHandler.bind(this);
   }
-  async componentDidMount(){
-    let apiResponse = await PictureApi.getAllPictures();
+  componentWillMount(){
+    const storedUser = UserStorage.getCurrentUser();
+    if (storedUser) {
+      this.setState({
+        signedIn: true,
+        currentUser: storedUser
+      })
+    }
+    this.updateWithPictures()
+  }
+  signInHandler(newUser){
+    UserStorage.setCurrentUser(newUser);
     this.setState({
-      pictureList: apiResponse.Items,
-      totalPictures: apiResponse.Count
+      signedIn: true,
+      currentUser: newUser
+    })
+  }
+  signOutHandler(){
+    UserStorage.removeCurrentUser();
+    this.setState({
+      signedIn: false,
+      currentUser: null
+    })
+  }
+  updateWithPictures(){
+    PictureApi.getAllPictures().then(apiResponse => {
+      this.setState({
+        pictureList: apiResponse.Items,
+        totalPictures: apiResponse.Count
+      })
     })
   }
   render() {
     return (
       <Router>
         <div id="appContainer">
-          <Route path="/" component={Nav}/>
+          <Route path="/" render={() => {
+            return (
+              <Nav 
+                signedIn={this.state.signedIn} 
+                currentUser={this.state.currentUser}
+                signOutHandler={this.signOutHandler}
+              />
+            );
+          }}/>
           <div className="container" id="contentContainer">
+            <Route 
+              exact path="/"
+              render={() => {
+                if (!this.state.signedIn) {
+                  return <SignIn signInHandler={this.signInHandler} />
+                }
+                else {
+                  return (
+                    <PictureMap 
+                      pictureList={this.state.pictureList}
+                      renderWithPictureActive={false} 
+                      activePicture={{}}
+                    />
+                  );
+                }
+              }}
+            />
             <Route 
               exact path="/pictures" 
               render={({ location }) => { 
@@ -53,6 +110,18 @@ class App extends Component {
             <Route 
               exact path="/pictures/new"
               render={(props) => { return <PictureCreator/>}}
+            />
+            <Route
+              exact path="/signin"
+              render={(props) => {
+                return (
+                  <SignIn 
+                    signedIn={this.state.signedIn} 
+                    currentUser={this.state.currentUser}
+                    signInHandler={this.signInHandler}
+                  />
+                )
+              }}
             />
           </div>
         </div>
