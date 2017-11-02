@@ -3,25 +3,32 @@ import { Link } from 'react-router-dom';
 
 import './Nav.css';
 
-const Nav = () => {
+function confirmSignOut(handler) {
+  if (window.confirm("Would you like to sign out?")) {
+    handler();
+  }
+}
+
+const Nav = ({signedIn, currentUser, signOutHandler}) => {
   return (
     <div id="nav-container">
-      <Link to="/pictures" id="logo">
+      <Link to="/" id="logo">
         1000words
       </Link>
-      <div id="nav-menu">
-
-        <div>
-          <Link to="/pictures">
-            Map
-          </Link>
-        </div>
-        <div>
-          <Link to="/pictures/new">
-            Add
-          </Link>
-        </div>
-      </div>
+        {
+          !signedIn ? null :
+          <div id="nav-menu">
+            <div>
+              <Link to="/pictures">Map</Link>
+            </div>
+            <div>
+              <Link to="/pictures/new">Add</Link>
+            </div>
+            <div className="nav-item" onClick={e => confirmSignOut(signOutHandler)}>
+              {signedIn ? currentUser.name : null}
+            </div>
+          </div>
+        }
     </div>
   );
 };

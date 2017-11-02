@@ -1,6 +1,6 @@
 * {
   text-align: center;
-  font-family: 'Merriweather', serif;
+  font-family: 'Roboto' sans-serif;
   color: #242F40;
 }
 
@@ -26,14 +26,26 @@ a {
 
 /* Buttons */
 
-input[type='submit'], input[type='submit'][disabled]:hover {
+input[type='submit'], input[type='submit'][disabled]:hover, button {
   background-color: #1B9AAA;
   border: 0.1rem solid #1B9AAA;
 }
 
-input[type='submit']:hover {
+input[type='submit']:hover, button:hover {
    background-color: #033F63;
    border: 0.1rem solid #033F63;
+ }
+
+ button.button-outline {
+   color: #1B9AAA;
+   font-size: 1.2rem;
+   font-weight: 500;
+ }
+
+ button.button-outline:hover {
+  background-color: #033F63;
+  border: 0.1rem solid #033F63;
+  color: white;
  }
 
  /* Error Styles */

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import LocationSelector from './LocationSelector/LocationSelector.js';
 import ParamsEncoder from '../../Encoders/Picture/ParamsEncoder.js';
-import PictureApi from '../../Api/PictureApi.js';
 
 import './PictureCreator.css';
 

@@ -30,3 +30,8 @@
   flex-direction: column;
   justify-content: center;
 }
+
+.nav-item {
+  color: white;
+  cursor: pointer;
+}

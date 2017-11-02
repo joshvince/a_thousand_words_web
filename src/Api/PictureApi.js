@@ -67,7 +67,7 @@ async function getSignedRequest(file, uuid) {
 
 async function postToS3(file, {signedRequest, url}) {
   try {
-    const res = await fetch(signedRequest, {
+    await fetch(signedRequest, {
       method: "PUT",
       body: file,
       headers: {
