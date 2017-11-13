@@ -1,15 +1,16 @@
 /* CRUD operations for pictures and images */
 var uuidv4 = require('uuid');
+const API_URL = process.env.REACT_APP_API_URL
 
 async function getAllPictures() { 
-  const res = await fetch('http://localhost:3001/pictures/all', {
+  const res = await fetch(`${API_URL}/pictures/all`, {
     accept: 'application/json'
   })
   return await res.json()
 }
 
 async function getPicturesFromUser(userId) {
-  const url = `http://localhost:3001/pictures?user-id=${userId}`;
+  const url = `${API_URL}/pictures?user-id=${userId}`;
   const res = await fetch(url, {
     accept: 'application/json'
   })
@@ -17,7 +18,7 @@ async function getPicturesFromUser(userId) {
 }
 
 async function postNewPicture(data){
-  const res = await fetch('http://localhost:3001/pictures/new', {
+  const res = await fetch(`${API_URL}/pictures/new`, {
     method: "POST",
     headers: {
       'Accept': 'application/json',
@@ -62,7 +63,7 @@ async function uploadImage(file) {
 
 async function getSignedRequest(file, uuid) {
   let s3FileName = buildFileName(file.name, uuid)
-  let url = `http://localhost:3001/sign-s3?file-name=${s3FileName}&file-type=${file.type}`
+  let url = `${API_URL}/sign-s3?file-name=${s3FileName}&file-type=${file.type}`
   const res = await fetch(url);
   if (res.status === 200) {
     const data = await res.json();

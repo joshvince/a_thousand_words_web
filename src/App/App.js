@@ -33,8 +33,9 @@ class App extends Component {
         signedIn: true,
         currentUser: storedUser
       })
+      this.updateWithPictures(storedUser.id)
     }
-    this.updateWithPictures(storedUser.id)
+    
   }
   signInHandler(newUser){
     UserStorage.setCurrentUser(newUser);
