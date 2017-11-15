@@ -1,7 +1,6 @@
 // Import dependencies
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import 'milligram';
 
 // Import the API clients and other helper modules
 import PictureApi from '../Api/PictureApi.js';
@@ -12,7 +11,8 @@ import Nav from './Nav/Nav.js';
 import SignIn from './User/SignIn.js';
 import PictureMap from '../Map/PictureMap.js';
 import PictureCreator from '../Picture/Creator/PictureCreator.js';
-import './App.css';
+import Homepage from '../Homepage/Homepage.js';
+// import './App.css';
 
 class App extends Component {
   constructor(props){
@@ -64,68 +64,51 @@ class App extends Component {
     return (
       <Router>
         <div id="appContainer">
-          <Route path="/" render={() => {
-            return (
-              <Nav 
-                signedIn={this.state.signedIn} 
-                currentUser={this.state.currentUser}
-                signOutHandler={this.signOutHandler}
-              />
-            );
-          }}/>
-          <div className="container" id="contentContainer">
-            <Route 
-              exact path="/"
-              render={() => {
-                if (!this.state.signedIn) {
-                  return <SignIn signInHandler={this.signInHandler} />
-                }
-                else {
-                  return (
-                    <PictureMap 
-                      pictureList={this.state.pictureList}
-                      renderWithPictureActive={false} 
-                      activePicture={{}}
-                    />
-                  );
-                }
-              }}
-            />
-            <Route 
-              exact path="/pictures" 
-              render={({ location }) => { 
-                let shouldRenderPic = false;
-                let activePic = {};
-                if (location.state) {
-                  shouldRenderPic = true;
-                  activePic = location.state.activePic
-                }
-                return (
-                  <PictureMap 
-                    pictureList={this.state.pictureList}
-                    renderWithPictureActive={shouldRenderPic} 
-                    activePicture={activePic}
-                  />
-                );
-              }}
-            />
-            <Route 
-              exact path="/pictures/new"
-              render={(props) => { return <PictureCreator currentUser={this.state.currentUser}/>}}
-            />
-            <Route
-              exact path="/signin"
-              render={(props) => {
-                return (
-                  <SignIn 
-                    signedIn={this.state.signedIn} 
-                    currentUser={this.state.currentUser}
-                    signInHandler={this.signInHandler}
-                  />
-                )
-              }}
-            />
-          </div>
+          <Route 
+            exact path="/"
+            render={() => {
+              if (!this.state.signedIn) {
+                return <SignIn signInHandler={this.signInHandler} />
+              }
+              else {
+                return <Homepage/>;
+              }
+            }}
+          />
+          <Route 
+            exact path="/map" 
+            render={({ location }) => { 
+              let shouldRenderPic = false;
+              let activePic = {};
+              if (location.state) {
+                shouldRenderPic = true;
+                activePic = location.state.activePic
+              }
+              return (
+                <PictureMap 
+                  pictureList={this.state.pictureList}
+                  renderWithPictureActive={shouldRenderPic} 
+                  activePicture={activePic}
+                />
+              );
+            }}
+          />
+          <Route 
+            exact path="/pictures/new"
+            render={(props) => { return <PictureCreator currentUser={this.state.currentUser}/>}}
+          />
+          <Route
+            exact path="/signin"
+            render={(props) => {
+              return (
+                <SignIn 
+                  signedIn={this.state.signedIn} 
+                  currentUser={this.state.currentUser}
+                  signInHandler={this.signInHandler}
+                />
+              )
+            }}
+          />
         </div>
       </Router>
     );
