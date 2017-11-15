@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Menu } from 'semantic-ui-react';
 
-import './Nav.css';
+// import './Nav.css';
 
 function confirmSignOut(handler) {
   if (window.confirm("Would you like to sign out?")) {
@@ -19,7 +20,7 @@ const Nav = ({signedIn, currentUser, signOutHandler}) => {
           !signedIn ? null :
           <div id="nav-menu">
             <div>
-              <Link to="/pictures">Map</Link>
+              <Link to="/map">Map</Link>
             </div>
             <div>
               <Link to="/pictures/new">Add</Link>
