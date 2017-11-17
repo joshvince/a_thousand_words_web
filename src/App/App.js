@@ -8,11 +8,12 @@ import UserStorage from '../User/UserStorage.js';
 
 // Import components and styles
 import Nav from './Nav/Nav.js';
-import SignIn from './User/SignIn.js';
+import SignIn from '../User/SignIn.js';
 import PictureMap from '../Map/PictureMap.js';
 import PictureCreator from '../Picture/Creator/PictureCreator.js';
 import Homepage from '../Homepage/Homepage.js';
 import StoryHomePage from '../Story/StoryHomePage.js';
+import StoryViewer from '../Story/Story/StoryViewer.js';
 // import './App.css';
 
 class App extends Component {
@@ -36,7 +37,6 @@ class App extends Component {
       })
       this.updateWithPictures(storedUser.id)
     }
-  
   }
   signInHandler(newUser){
     UserStorage.setCurrentUser(newUser);
@@ -66,6 +66,18 @@ class App extends Component {
       <Router>
         <div>
           <Route exact path="/" component={Homepage} />
+            <Route
+            exact path="/signin"
+            render={() => {
+              return (
+                <SignIn 
+                  signedIn={this.state.signedIn} 
+                  currentUser={this.state.currentUser}
+                  signInHandler={this.signInHandler}
+                />
+              )
+            }}
+          />
           <Route 
             exact path="/stories"
             render={() => {
@@ -77,6 +89,7 @@ class App extends Component {
               }
             }}
           />
+          <Route exact path="/stories/1" component={StoryViewer} />
           <Route 
             exact path="/map" 
             render={({ location }) => { 
@@ -98,18 +111,6 @@ class App extends Component {
           <Route 
             exact path="/pictures/new"
             render={(props) => { return <PictureCreator currentUser={this.state.currentUser}/>}}
-          />
-          <Route
-            exact path="/signin"
-            render={(props) => {
-              return (
-                <SignIn 
-                  signedIn={this.state.signedIn} 
-                  currentUser={this.state.currentUser}
-                  signInHandler={this.signInHandler}
-                />
-              )
-            }}
           />
         </div>
       </Router>

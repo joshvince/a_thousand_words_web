@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UserApi from '../../Api/UserApi.js';
+import UserApi from '../Api/UserApi.js';
 import {Container, Button, Header} from 'semantic-ui-react';
 
 class SignIn extends Component {

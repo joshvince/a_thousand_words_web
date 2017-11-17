@@ -1,7 +1,7 @@
 import React from 'react';
 import {Container, Header, Segment } from 'semantic-ui-react';
 
-import Archive from './Archive.js'
+import Archive from './Archive/Archive.js'
 
 const StoryHomePage = ({currentUser}) => {
   return (

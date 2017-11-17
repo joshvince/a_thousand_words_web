@@ -1,41 +1,19 @@
 import React from 'react';
-import {  Button, Container, Grid, Header, Image, Segment, 
-          Icon } from 'semantic-ui-react';
-import PhotoFront from './photofront.jpg';
 import { Link } from 'react-router-dom';
+import { Button, Grid, Header, Image, Segment, Icon } from 'semantic-ui-react';
+import PageHeader from '../App/Header/PageHeader.js';
+import PhotoFront from './photofront.jpg';
+
 
 const Homepage = () => {
+  const CTAButton = <Button primary size="huge" content="Get Started" as={Link} to="/stories" />
   return (
     <div>
-      <Segment
-        textAlign='center'
-        style={{ minHeight: 700, padding: '1em 0em' }}
-        vertical
-        inverted
-      >
-        <Container text>
-          <Header
-            as='h1'
-            content='A Thousand Words'
-            inverted
-            style={{ fontSize: '4em', fontWeight: 'normal', marginBottom: 0, marginTop: '3em' }}
-          />
-          <Header
-            as='h2'
-            content='A place for photos with a story'
-            inverted
-            style={{ fontSize: '1.7em', fontWeight: 'normal' }}
-          />
-          <Button 
-            primary 
-            size="huge"
-            content="Get Started"
-            as={Link}
-            to="/stories"
-          />
-        </Container>
-      </Segment>
-
+      <PageHeader 
+        title='A Thousand Words'
+        subtitle='A place for photos with a story'
+        button={CTAButton}
+      />
       <Grid columns={2} container stackable style={{padding: '3em 0em'}}>
         <Grid.Column>
           <Segment textAlign='center' basic>
