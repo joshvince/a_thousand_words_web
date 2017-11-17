@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import UserApi from '../../Api/UserApi.js';
-
-import './SignIn.css';
+import {Container, Button, Header} from 'semantic-ui-react';
 
 class SignIn extends Component {
   constructor(props){
@@ -21,24 +20,20 @@ class SignIn extends Component {
   }
   render() {
     return (
-      <div>
-        <div className="row">
-          <div className="column" id="header">
-            <h1>Please Sign In</h1>
-          </div>
-        </div>
-        {this.state.userList.map((usr, i) => {
-          return (
-            <div className="row" key={i}>
-              <div className="user-wrapper">
-                <h3>{usr.name}</h3>
-                <button className="button-outline" onClick={e => {this.signIn(usr)}}>
-                  Sign in
-                </button>
-              </div>
-            </div>
-          )
-        })}
+      <div style={{padding: '4em 0em'}}>
+        <Container text textAlign='center'>
+          <Header as='h1' content='Please Sign In' />
+          {this.state.userList.map((usr, i) => {
+            return (
+              <Button 
+                secondary 
+                content={usr.name} 
+                key={i} 
+                onClick={e => this.signIn(usr)}
+              />
+            )
+          })}
+        </Container>
       </div>
     );
   }

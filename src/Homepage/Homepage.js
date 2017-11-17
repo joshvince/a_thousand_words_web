@@ -2,6 +2,7 @@ import React from 'react';
 import {  Button, Container, Grid, Header, Image, Segment, 
           Icon } from 'semantic-ui-react';
 import PhotoFront from './photofront.jpg';
+import { Link } from 'react-router-dom';
 
 const Homepage = () => {
   return (
@@ -25,7 +26,13 @@ const Homepage = () => {
             inverted
             style={{ fontSize: '1.7em', fontWeight: 'normal' }}
           />
-          <Button primary size="huge">Get Started</Button>
+          <Button 
+            primary 
+            size="huge"
+            content="Get Started"
+            as={Link}
+            to="/stories"
+          />
         </Container>
       </Segment>
 

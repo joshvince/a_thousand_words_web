@@ -12,6 +12,7 @@ import SignIn from './User/SignIn.js';
 import PictureMap from '../Map/PictureMap.js';
 import PictureCreator from '../Picture/Creator/PictureCreator.js';
 import Homepage from '../Homepage/Homepage.js';
+import StoryHomePage from '../Story/StoryHomePage.js';
 // import './App.css';
 
 class App extends Component {
@@ -35,7 +36,7 @@ class App extends Component {
       })
       this.updateWithPictures(storedUser.id)
     }
-    
+  
   }
   signInHandler(newUser){
     UserStorage.setCurrentUser(newUser);
@@ -63,15 +64,16 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div id="appContainer">
+        <div>
+          <Route exact path="/" component={Homepage} />
           <Route 
-            exact path="/"
+            exact path="/stories"
             render={() => {
               if (!this.state.signedIn) {
                 return <SignIn signInHandler={this.signInHandler} />
               }
               else {
-                return <Homepage/>;
+                return <StoryHomePage currentUser={this.state.currentUser}/>;
               }
             }}
           />
