@@ -18,6 +18,7 @@ class HeaderViewHandler extends Component {
       data: newData,
       editing: false
     })
+    this.props.submitHandler("header", newData)
   }
   toggleEdit = () => {
     this.setState({editing: true})

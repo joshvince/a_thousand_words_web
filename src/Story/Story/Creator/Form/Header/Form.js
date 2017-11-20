@@ -19,7 +19,6 @@ class HeaderForm extends Component {
   handleChange = (e, { name, value }) => this.setState({ [name]: value })
 
   handleSubmit = (e) => {
-    console.log("fired the submit handler")
     const formData = this.state;
     this.props.submitHandler(formData)
   }
