@@ -10,7 +10,10 @@ class StoryStepViewHandler extends Component {
       data: {
         headline: "",
         year: "",
-        description: ""
+        description: "",
+        imageFile: null,
+        imageFileName: null,
+        imagePreviewUrl: null
       }
     }
   }
@@ -33,12 +36,16 @@ class StoryStepViewHandler extends Component {
             headline={this.state.data.headline} 
             year={this.state.data.year}
             description={this.state.data.description}
+            imageFileName={this.state.data.imageFileName}
+            imageFile={this.state.data.imageFile}
+            imagePreviewUrl={this.state.data.imagePreviewUrl}
             submitHandler={this.updateData} 
           /> :
           <StoryStepView 
             headline={this.state.data.headline} 
             year={this.state.data.year}
             description={this.state.data.description}
+            imagePreviewUrl={this.state.data.imagePreviewUrl}
             submitHandler={this.toggleEdit}
           />}
       </div>

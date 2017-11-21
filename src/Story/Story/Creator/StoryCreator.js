@@ -46,7 +46,6 @@ class StoryCreator extends Component {
         <Segment vertical>
           <StoryStepViewHandler submitHandler={this.updateFormData} />
           <Divider section />
-          <StoryStepViewHandler submitHandler={this.updateFormData} />
         </Segment>
       </div>
     );
