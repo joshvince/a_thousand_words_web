@@ -22,7 +22,17 @@ class StoryStepViewHandler extends Component {
       data: newData,
       editing: false
     })
-    this.props.submitHandler("step", newData)
+    const payload = {
+      section: "step",
+      data: newData, 
+      stepKey: this.props.stepKey
+    }
+    this.props.submitHandler(payload)
+  }
+  handleDelete = (e) => {
+    e.preventDefault();
+    let key = this.props.stepKey
+    this.props.deleteHandler(key)
   }
   toggleEdit = () => {
     this.setState({editing: true})
@@ -33,12 +43,14 @@ class StoryStepViewHandler extends Component {
       <div>
         {displayForm ? 
           <StoryStepForm 
+            stepKey={this.props.stepKey}
             headline={this.state.data.headline} 
             year={this.state.data.year}
             description={this.state.data.description}
             imageFileName={this.state.data.imageFileName}
             imageFile={this.state.data.imageFile}
             imagePreviewUrl={this.state.data.imagePreviewUrl}
+            deleteHandler={this.handleDelete}
             submitHandler={this.updateData} 
           /> :
           <StoryStepView 

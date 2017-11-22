@@ -14,11 +14,12 @@ class HeaderViewHandler extends Component {
     }
   }
   updateData = (newData) => {
+    const payload = {section: "header", data: newData}
     this.setState({
       data: newData,
       editing: false
     })
-    this.props.submitHandler("header", newData)
+    this.props.submitHandler(payload)
   }
   toggleEdit = () => {
     this.setState({editing: true})

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {  Container, Form, TextArea, 
+import {  Container, Form, TextArea, Segment,
           Input, Button, Icon, Header, Image, Divider } from 'semantic-ui-react';
 import ImagePreview from './ImagePreview.js';
 
@@ -11,6 +11,7 @@ const styles = {
   divider: {marginBottom: '2em'},
   uploadButton: { marginBottom: '1.2em'}
 }
+
 class StoryStepForm extends Component {
   constructor(props){
     super(props)
@@ -21,7 +22,7 @@ class StoryStepForm extends Component {
       imageFile: this.props.imageFile,
       imageFileName: this.props.imageFileName,
       imagePreviewUrl: this.props.imagePreviewUrl,
-      showUpload: !this.props.imageFile
+      showUpload: false
     }
   }
 
@@ -36,7 +37,8 @@ class StoryStepForm extends Component {
 
   handleImageSelect = (e) => {
     e.preventDefault();
-    let fileInput = document.getElementById("userImg");
+    let id = `userImg${this.props.stepKey}`
+    let fileInput = document.getElementById(id);
     let file = fileInput.files[0];
     let reader = new FileReader();
     if (file == null) {
@@ -66,49 +68,61 @@ class StoryStepForm extends Component {
     let fileSize = this.state.imageFile ? this.state.imageFile.size : null
     return (
       <Container style={styles.formContainer}>
-        <Form size="huge" style={styles.formContainer}>
-          <ImagePreview 
-            imageFileName={imageFileName}
-            imagePreviewUrl={imagePreviewUrl}
-            imageFileSize={fileSize}
-          />        
-          <Button 
-            basic 
-            style={styles.uploadButton}
-            content="upload new image" 
-            onClick={this.toggleUpload} 
-          />
-        
-          {!this.state.showUpload ? null :
-            <Form.Field>
-              <input 
-                type="file" 
-                accept="image/*" 
-                id="userImg"
-                onChange={this.handleImageSelect}
-              />
-            </Form.Field>}
-          <Divider style={styles.divider}/>
-          <Form.Input fluid
-            placeholder="Enter a headline"
-            name="headline"
-            value={this.state.headline}
-            onChange={this.handleChange}
-          />
-          <Form.TextArea 
-            style={styles.textArea}
-            placeholder="Enter a description" 
-            name="description"
-            value={this.state.description}
-            onChange={this.handleChange}
-          />
 
-          <Form.Button
-            color="green" 
-            content="Save"
-            size="huge"
-            onClick={this.handleSubmit} />
-        </Form>
+        <Segment clearing>
+        <Segment basic>
+        <Button 
+          basic 
+          negative 
+          content="Delete" 
+          floated="right"
+          onClick={this.props.deleteHandler}/>
+        </Segment>
+          <Form size="huge" style={styles.formContainer}>
+            <ImagePreview 
+              imageFileName={imageFileName}
+              imagePreviewUrl={imagePreviewUrl}
+              imageFileSize={fileSize}
+            />        
+            <Button 
+              basic 
+              style={styles.uploadButton}
+              content="upload new image" 
+              onClick={this.toggleUpload} 
+            />
+          
+            {!this.state.showUpload ? null :
+              <Form.Field>
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  id={`userImg${this.props.stepKey}`}
+                  onChange={this.handleImageSelect}
+                />
+              </Form.Field>}
+            <Divider  hidden/>
+            <Form.Input fluid
+              placeholder="Enter a headline"
+              name="headline"
+              value={this.state.headline}
+              onChange={this.handleChange}
+            />
+            <Form.TextArea 
+              style={styles.textArea}
+              placeholder="Enter a description" 
+              name="description"
+              value={this.state.description}
+              onChange={this.handleChange}
+            />
+            <Form.Button
+              basic
+              color="green" 
+              content="Save this step"
+              size="huge"
+              onClick={this.handleSubmit} 
+            />
+          </Form>
+        </Segment>
       </Container>
     );
   }
