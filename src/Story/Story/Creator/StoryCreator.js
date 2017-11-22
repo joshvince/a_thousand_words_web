@@ -47,7 +47,7 @@ class StoryCreator extends Component {
 
   updateStepData = (newStepData) => {
     let stepArray = Array.from(this.state.activeSteps);
-    const index = stepArray.findIndex(el => el.stepKey == newStepData.stepKey)
+    const index = stepArray.findIndex(el => el.stepKey === newStepData.stepKey)
     if (index !== -1) {
       // you found a dupe, replace it
       stepArray.splice(index, 1, newStepData);
@@ -73,7 +73,7 @@ class StoryCreator extends Component {
 
   deleteStep = (stepKey) => {
     const stepArray = Array.from(this.state.activeSteps)
-    const index = stepArray.findIndex(el => el.stepKey == stepKey)
+    const index = stepArray.findIndex(el => el.stepKey === stepKey)
     if (index !== -1) {
       // delete it
       stepArray.splice(index, 1);

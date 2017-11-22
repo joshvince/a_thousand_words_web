@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {  Container, Form, TextArea, Segment,
-          Input, Button, Icon, Header, Image, Divider } from 'semantic-ui-react';
+import {  Container, Form, Segment, Confirm,
+          Button, Divider } from 'semantic-ui-react';
 import ImagePreview from './ImagePreview.js';
 
 const styles = {
@@ -22,18 +22,19 @@ class StoryStepForm extends Component {
       imageFile: this.props.imageFile,
       imageFileName: this.props.imageFileName,
       imagePreviewUrl: this.props.imagePreviewUrl,
-      showUpload: false
+      showUploadBox: false,
+      showModal: false
     }
   }
+  showModal = (e) => this.setState({showModal: true})
 
-  toggleUpload = () => this.setState({showUpload: !this.state.showUpload})
+  dismissModal = (e) => this.setState({showModal: false})
+
+  toggleUploadBox = (e) => this.setState({showUploadBox: !this.state.showUploadBox})
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value })
 
-  handleSubmit = (e) => {
-    const formData = this.state;
-    this.props.submitHandler(formData)
-  }
+  handleSubmit = (e) => { this.props.submitHandler(this.state) }
 
   handleImageSelect = (e) => {
     e.preventDefault();
@@ -68,15 +69,21 @@ class StoryStepForm extends Component {
     let fileSize = this.state.imageFile ? this.state.imageFile.size : null
     return (
       <Container style={styles.formContainer}>
-
         <Segment clearing>
         <Segment basic>
-        <Button 
-          basic 
-          negative 
-          content="Delete" 
-          floated="right"
-          onClick={this.props.deleteHandler}/>
+          <Button 
+            basic 
+            negative 
+            content="Delete" 
+            floated="right" 
+            onClick={this.showModal}
+          />
+          <Confirm
+            content="This action cannot be undone. Are you sure you want to delete this step?"
+            open={this.state.showModal}
+            onCancel={this.dismissModal}
+            onConfirm={this.props.deleteHandler}
+          />
         </Segment>
           <Form size="huge" style={styles.formContainer}>
             <ImagePreview 
@@ -88,10 +95,10 @@ class StoryStepForm extends Component {
               basic 
               style={styles.uploadButton}
               content="upload new image" 
-              onClick={this.toggleUpload} 
+              onClick={this.toggleUploadBox} 
             />
           
-            {!this.state.showUpload ? null :
+            {!this.state.showUploadBox ? null :
               <Form.Field>
                 <input 
                   type="file" 

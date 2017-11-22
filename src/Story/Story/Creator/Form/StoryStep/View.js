@@ -1,5 +1,5 @@
 import React from 'react';
-import { Segment, Divider, Container, Header, Button, Icon, Image} from 'semantic-ui-react';
+import { Segment, Container, Header, Button, Icon, Image} from 'semantic-ui-react';
 
 const styles = {
   container: {
