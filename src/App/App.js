@@ -7,13 +7,13 @@ import PictureApi from '../Api/PictureApi.js';
 import UserStorage from '../User/UserStorage.js';
 
 // Import components and styles
-import Nav from './Nav/Nav.js';
 import SignIn from '../User/SignIn.js';
 import PictureMap from '../Map/PictureMap.js';
 import PictureCreator from '../Picture/Creator/PictureCreator.js';
 import Homepage from '../Homepage/Homepage.js';
 import StoryHomePage from '../Story/StoryHomePage.js';
 import StoryViewer from '../Story/Story/StoryViewer.js';
+import StoryCreator from '../Story/Story/Creator/StoryCreator.js';
 // import './App.css';
 
 class App extends Component {
@@ -90,6 +90,7 @@ class App extends Component {
             }}
           />
           <Route exact path="/stories/1" component={StoryViewer} />
+          <Route exact path="/stories/new" component={StoryCreator} />
           <Route 
             exact path="/map" 
             render={({ location }) => { 

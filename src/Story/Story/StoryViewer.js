@@ -1,5 +1,4 @@
 import React from 'react';
-import { Segment, Container, Image } from 'semantic-ui-react';
 import PageHeader from '../../App/Header/PageHeader.js';
 import StoryStep from './StoryStep.js';
 

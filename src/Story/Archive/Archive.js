@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Icon, Button } from 'semantic-ui-react';
+import { Card, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import ArchiveItem from './ArchiveItem.js';
 
@@ -30,7 +30,7 @@ const StoryArchive = ({storyList}) => {
         <Card 
           style={styles.buttonCard.outer} 
           as={Link} 
-          to="/stories" 
+          to="/stories/new" 
           centered={shouldCenter}
         >
           <div style={styles.buttonCard.inner}> 
