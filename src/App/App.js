@@ -90,7 +90,9 @@ class App extends Component {
             }}
           />
           <Route exact path="/stories/1" component={StoryViewer} />
-          <Route exact path="/stories/new" component={StoryCreator} />
+          <Route exact path="/stories/new" 
+            render={() => <StoryCreator currentUser={this.state.currentUser} />} 
+          />
           <Route 
             exact path="/map" 
             render={({ location }) => { 

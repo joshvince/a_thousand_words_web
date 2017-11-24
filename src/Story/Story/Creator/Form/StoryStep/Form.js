@@ -47,7 +47,6 @@ class StoryStepForm extends Component {
     }
     else {
       reader.onloadend = () => {
-        console.log(file.name)
         this.setState({
           showUpload: false,
           imageFile: file,
