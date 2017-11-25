@@ -2,7 +2,6 @@
 import PictureApi from './PictureApi';
 import dbServer from './dbServer';
 var uuidv4 = require('uuid');
-const API_URL = process.env.REACT_APP_API_URL
 
 async function create(rawFormData, userId) {
   const storyUuid = uuidv4();

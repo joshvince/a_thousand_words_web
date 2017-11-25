@@ -13,13 +13,14 @@ async function create(file, userId){
     const serverResp = await dbServer.getSignedRequest(s3FileName, file.type);
     // Upload the image to S3
     try {
-      const imageUrl = await S3Upload(file, serverResp);
-      // Return an object that can be added to the DB as part of the story
-      return {
-        userId: userId,
-        uuid: imageUuid,
-        url: imageUrl
-      }
+      return await S3Upload(file, serverResp).then(imageUrl => {
+        // Return an object that can be added to the DB as part of the story
+        return {
+          userId: userId,
+          uuid: imageUuid,
+          url: imageUrl
+        }
+      });
     } 
     catch (error) {
       console.log(`Error posting to S3`)
