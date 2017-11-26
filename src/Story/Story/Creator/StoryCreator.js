@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Segment, Header, Divider, Button } from 'semantic-ui-react';
+import { Segment, Header, Divider, Button, Loader, Dimmer } from 'semantic-ui-react';
+import { Redirect } from 'react-router-dom';
 
 import HeaderViewHandler from './Form/Header/ViewHandler.js';
 import StoryStepViewHandler from './Form/StoryStep/ViewHandler.js';
@@ -21,7 +22,10 @@ class StoryCreator extends Component {
     super(props);
     this.state = {
       nextStepKey: 1,
-      steps: [this.initialiseStep()]
+      steps: [this.initialiseStep()],
+      displayLoader: false,
+      fireRedirect: false,
+      storyId: null
     }
   }
 
@@ -86,16 +90,35 @@ class StoryCreator extends Component {
     }
   }
 
-  saveStory = async (e) => {
-    e.preventDefault();
-    return await StoryApi.create(this.state, this.props.currentUser.id).then(resp => {
+  displayLoader = (e) => {
+    this.setState({displayLoader: true})
+    this.saveStory()
+  }
+
+  saveStory = async () => {
+    try {
+      const resp = await StoryApi.create(this.state, this.props.currentUser.id)
+      this.redirectToStory(resp.uuid)
       console.log(`Created a story in the DB: ${JSON.stringify(resp)}`)
+    } catch (error) {
+      this.setState({displayLoader: false})
+      console.log(`Error creating the story: ${error}`)
+    }
+  }
+
+  redirectToStory = (storyId) => {
+    this.setState({
+      fireRedirect: true,
+      storyId: storyId
     })
   }
 
   render() {
     return (
       <div>
+        <Dimmer page active={this.state.displayLoader}>
+          <Loader size="huge" content="Uploading your story" indeterminate/>
+        </Dimmer>
         <Segment vertical inverted>
           <Header as="h1" content="Tell your story..." style={styles.header}/>
           <HeaderViewHandler submitHandler={this.updateFormData}/>
@@ -127,6 +150,9 @@ class StoryCreator extends Component {
               onClick={this.saveStory}
             />
         </Segment>
+        {this.state.fireRedirect && (
+          <Redirect to={{pathname: `/stories/${this.state.storyId}`}} />
+        )}
       </div>
     );
   }

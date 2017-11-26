@@ -1,51 +1,45 @@
-import React from 'react';
+import React, { Component } from 'react';
+import {Dimmer, Loader} from 'semantic-ui-react';
+
+import StoryApi from '../../Api/StoryApi.js';
+
 import PageHeader from '../../App/Header/PageHeader.js';
 import StoryStep from './StoryStep.js';
 
-import TESTPHOTO1 from '../../Homepage/photofront.jpg';
-import TESTPHOTO2 from '../../Homepage/photorear.jpg';
-
-const TESTSTORY = {
-  title: "Lorem ipsum dolor",
-  subtitle: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.",
-  steps: [
-    {
-      position: 0,
-      imageUrl: TESTPHOTO1,
-      info: {
-        title: "South Farm Road",
-        year: 1989,
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-      }
-    },
-    {
-      position: 1,
-      imageUrl: TESTPHOTO2,
-      info: {
-        title: "Terringes Avenue",
-        year: 1993,
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-      }
-    },
-    {
-      position: 2,
-      imageUrl: TESTPHOTO1,
-      info: {
-        title: "Lavington Road",
-        year: 1989,
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-      }
+class StoryViewer extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      displayLoader: true
     }
-  ]
+  }
+  componentDidMount = () => {
+    StoryApi.getOneStory(this.props.storyId).then(story => {
+      this.setState({storyData: story, displayLoader: false})
+    })
+  }
+  render() {
+    return (
+      <div>
+        <Dimmer page active={this.state.displayLoader}>
+          <Loader size="huge"/>
+        </Dimmer>
+        {this.state.displayLoader ? null :
+          [
+            <PageHeader 
+              title={this.state.storyData.title} 
+              subtitle={this.state.storyData.subtitle} 
+              button={null}
+              key={this.props.storyId} 
+            />,
+            this.state.storyData.steps.map( (step,i) => {
+              return <StoryStep step={step} key={i}/>
+            })
+          ]
+        }
+      </div>
+    );
+  }
 }
-
-const StoryViewer = () => {
-  return (
-    <div>
-      <PageHeader title={TESTSTORY.title} subtitle={TESTSTORY.subtitle} button={null} />
-      {TESTSTORY.steps.map( (step,i) => <StoryStep step={step} key={i}/> )}
-    </div>
-  );
-};
 
 export default StoryViewer;

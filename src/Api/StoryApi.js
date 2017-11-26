@@ -3,6 +3,10 @@ import PictureApi from './PictureApi';
 import dbServer from './dbServer';
 var uuidv4 = require('uuid');
 
+function getOneStory(storyId) {
+  return dbServer.getOneStory(storyId).then(resp => resp)
+}
+
 async function create(rawFormData, userId) {
   const storyUuid = uuidv4();
   // Try to create each step in turn
@@ -49,6 +53,7 @@ function createOneStoryStep(rawStepData, userId) {
 }
 
 const StoryApi = {
+  getOneStory: getOneStory,
   create: create
 }
 

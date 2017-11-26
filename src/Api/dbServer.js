@@ -14,6 +14,11 @@ async function getSignedRequest(filename, fileType) {
   return await get(url)
 }
 
+async function getOneStory(storyId){
+  const url = `${API_URL}/stories/${storyId}`
+  return await get(url)
+}
+
 /*
 uploadStory
 Takes in a story object, Sends the object to the DB for insertion into the database
@@ -62,6 +67,7 @@ async function get(url) {
 
 const dbServer = {
   getSignedRequest: getSignedRequest,
+  getOneStory: getOneStory,
   uploadStory: uploadStory
 }
 

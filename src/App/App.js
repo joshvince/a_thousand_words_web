@@ -1,9 +1,10 @@
 // Import dependencies
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 // Import the API clients and other helper modules
 import PictureApi from '../Api/PictureApi.js';
+import StoryApi from '../Api/StoryApi.js';
 import UserStorage from '../User/UserStorage.js';
 
 // Import components and styles
@@ -28,6 +29,7 @@ class App extends Component {
     this.signInHandler = this.signInHandler.bind(this);
     this.signOutHandler = this.signOutHandler.bind(this);
   }
+
   componentWillMount(){
     const storedUser = UserStorage.getCurrentUser();
     if (storedUser) {
@@ -38,6 +40,7 @@ class App extends Component {
       this.updateWithPictures(storedUser.id)
     }
   }
+
   signInHandler(newUser){
     UserStorage.setCurrentUser(newUser);
     this.setState({
@@ -46,6 +49,7 @@ class App extends Component {
     })
     this.updateWithPictures(newUser.id)
   }
+
   signOutHandler(){
     UserStorage.removeCurrentUser();
     this.setState({
@@ -53,6 +57,7 @@ class App extends Component {
       currentUser: null
     })
   }
+
   updateWithPictures(userId){
     PictureApi.getPicturesFromUser(userId).then(apiResponse => {
       this.setState({
@@ -61,6 +66,7 @@ class App extends Component {
       })
     })
   }
+
   render() {
     return (
       <Router>
@@ -78,21 +84,26 @@ class App extends Component {
               )
             }}
           />
-          <Route 
-            exact path="/stories"
-            render={() => {
-              if (!this.state.signedIn) {
-                return <SignIn signInHandler={this.signInHandler} />
-              }
-              else {
-                return <StoryHomePage currentUser={this.state.currentUser}/>;
-              }
-            }}
-          />
-          <Route exact path="/stories/1" component={StoryViewer} />
-          <Route exact path="/stories/new" 
-            render={() => <StoryCreator currentUser={this.state.currentUser} />} 
-          />
+          <Switch>
+            <Route 
+              exact path="/stories"
+              render={() => {
+                if (!this.state.signedIn) {
+                  return <SignIn signInHandler={this.signInHandler} />
+                }
+                else {
+                  return <StoryHomePage currentUser={this.state.currentUser}/>;
+                }
+              }}
+            />
+            <Route exact path="/stories/new" 
+              render={() => <StoryCreator currentUser={this.state.currentUser} />} 
+            />
+            <Route 
+              path="/stories/:storyId" 
+              render={({match}) => <StoryViewer storyId={match.params.storyId} />}
+            />
+          </Switch>
           <Route 
             exact path="/map" 
             render={({ location }) => { 
@@ -110,10 +121,6 @@ class App extends Component {
                 />
               );
             }}
-          />
-          <Route 
-            exact path="/pictures/new"
-            render={(props) => { return <PictureCreator currentUser={this.state.currentUser}/>}}
           />
         </div>
       </Router>
