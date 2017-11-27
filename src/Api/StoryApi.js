@@ -3,8 +3,12 @@ import PictureApi from './PictureApi';
 import dbServer from './dbServer';
 var uuidv4 = require('uuid');
 
-function getOneStory(storyId) {
-  return dbServer.getOneStory(storyId).then(resp => resp)
+async function getStoriesByUser(userId) {
+  return await dbServer.getStoriesByUser(userId)
+}
+
+async function getOneStory(storyId) {
+  return await dbServer.getOneStory(storyId)
 }
 
 async function create(rawFormData, userId) {
@@ -53,6 +57,7 @@ function createOneStoryStep(rawStepData, userId) {
 }
 
 const StoryApi = {
+  getStoriesByUser: getStoriesByUser,
   getOneStory: getOneStory,
   create: create
 }

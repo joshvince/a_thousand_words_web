@@ -9,7 +9,7 @@ const styles = {
 }
 const ArchiveItem = ({storyData, shouldCenter}) => {
   return (
-    <Card as={Link} to="/stories/1" >
+    <Card as={Link} to={`/stories/${storyData.uuid}`} >
       <Card.Content>
         <Card.Header style={styles.header}>
           {storyData.title}
@@ -17,7 +17,7 @@ const ArchiveItem = ({storyData, shouldCenter}) => {
       </Card.Content>
       <Card.Content>
         <Card.Description>
-          {storyData.description}
+          {storyData.subtitle}
         </Card.Description>
       </Card.Content>
     </Card>
