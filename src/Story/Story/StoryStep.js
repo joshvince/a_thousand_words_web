@@ -9,12 +9,11 @@ const styles = {
 const StoryStep = ({step}) => {
   return (
     <Container fluid>
-      <Image fluid src={step.imageUrl} />
-      <Segment vertical container textAlign="center" style={styles.container}>
-        <Header as="h1" content={step.info.title} style={styles.title}/>
-        <Header as="h2" content={step.info.year} />
+      <Image fluid src={step.image.url} />
+      <Segment vertical textAlign="center" style={styles.container}>
+        <Header as="h1" content={step.headline} style={styles.title}/>
         <Container text>
-          {step.info.description}
+          {step.description}
         </Container>
       </Segment>
     </Container>

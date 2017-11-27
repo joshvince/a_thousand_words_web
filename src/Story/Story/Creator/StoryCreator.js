@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { Segment, Header, Divider, Button } from 'semantic-ui-react';
+import { Segment, Header, Divider, Button} from 'semantic-ui-react';
 
 import HeaderViewHandler from './Form/Header/ViewHandler.js';
 import StoryStepViewHandler from './Form/StoryStep/ViewHandler.js';
+import Uploader from './Uploader/Uploader.js';
+
+import StoryApi from '../../../Api/StoryApi.js';
 
 const styles = {
   header: {
@@ -19,7 +22,11 @@ class StoryCreator extends Component {
     super(props);
     this.state = {
       nextStepKey: 1,
-      activeSteps: [this.initialiseStep()]
+      steps: [this.initialiseStep()],
+      showUploader: false,
+      uploadInProgress: false,
+      uploadSuccess: null,
+      storyId: null
     }
   }
 
@@ -46,55 +53,78 @@ class StoryCreator extends Component {
   }
 
   updateStepData = (newStepData) => {
-    let stepArray = Array.from(this.state.activeSteps);
+    let stepArray = Array.from(this.state.steps);
     const index = stepArray.findIndex(el => el.stepKey === newStepData.stepKey)
     if (index !== -1) {
       // you found a dupe, replace it
       stepArray.splice(index, 1, newStepData);
-      this.setState({ activeSteps: stepArray })
+      this.setState({ steps: stepArray })
     }
     else {
       // add it to the end of the array
       stepArray.push(newStepData)
-      this.setState({ activeSteps: stepArray })
+      this.setState({ steps: stepArray })
     }
   }
   
   addNewStep = () => {
     const newStep = this.initialiseStep(this.state.nextStepKey)
-    const newSteps = Array.from(this.state.activeSteps)
+    const newSteps = Array.from(this.state.steps)
     newSteps.push(newStep)
     const nextStepKey = (this.state.nextStepKey + 1)
     this.setState({
       nextStepKey: nextStepKey,
-      activeSteps: newSteps
+      steps: newSteps
     })
   }
 
   deleteStep = (stepKey) => {
-    const stepArray = Array.from(this.state.activeSteps)
+    const stepArray = Array.from(this.state.steps)
     const index = stepArray.findIndex(el => el.stepKey === stepKey)
     if (index !== -1) {
       // delete it
       stepArray.splice(index, 1);
-      this.setState({ activeSteps: stepArray })
+      this.setState({ steps: stepArray })
     }
     else {
       return null
     }
   }
 
-  //TODO: DELETE A STEP USING THE BUTTON! FIND IT IN THE ARRAY SOMEHOW AND KILL IT.
+  saveStory = (e) => {
+    e.preventDefault();
+    this.setState({showUploader: true, uploadInProgress: true})
+
+    StoryApi.create(this.state, this.props.currentUser.id).then(resp => {
+      this.setState({
+        uploadInProgress: false,
+        uploadSuccess: true, 
+        storyId: resp.uuid
+      })
+    }).catch(error => {
+      this.setState({
+        uploadInProgress: false,
+        uploadSuccess: false
+      })
+      console.log(`Error creating the story: ${error}`)
+    })
+  }
 
   render() {
     return (
       <div>
+        {this.state.showUploader ? 
+        <Uploader 
+          isInProgress={this.state.uploadInProgress} 
+          result={this.state.uploadSuccess}
+          storyId={this.state.storyId}
+        /> : null}
         <Segment vertical inverted>
           <Header as="h1" content="Tell your story..." style={styles.header}/>
           <HeaderViewHandler submitHandler={this.updateFormData}/>
         </Segment>
         <Segment vertical>
-          {this.state.activeSteps.map((step, i) => {
+          {this.state.steps.map((step, i) => {
             return(
               <div key={i}>
                 <StoryStepViewHandler 
@@ -117,12 +147,12 @@ class StoryCreator extends Component {
               positive
               content="Save this story"
               width={12}
+              onClick={this.saveStory}
             />
         </Segment>
       </div>
     );
   }
 }
-
 
 export default StoryCreator;

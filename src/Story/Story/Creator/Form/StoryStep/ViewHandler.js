@@ -9,11 +9,10 @@ class StoryStepViewHandler extends Component {
       editing: true,
       data: {
         headline: "",
-        year: "",
         description: "",
         imageFile: null,
-        imageFileName: null,
-        imagePreviewUrl: null
+        imageFileName: "",
+        imagePreviewUrl: ""
       }
     }
   }

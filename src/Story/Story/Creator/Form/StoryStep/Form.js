@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import {  Container, Form, Segment, Confirm,
+import {  Container, Form, Segment,
           Button, Divider } from 'semantic-ui-react';
 import ImagePreview from './ImagePreview.js';
+import DeleteStep from './DeleteStep.js';
 
 const styles = {
   formContainer: {
@@ -26,13 +27,35 @@ class StoryStepForm extends Component {
       showModal: false
     }
   }
-  showModal = (e) => this.setState({showModal: true})
+
+  componentDidMount = () => {
+    this.setState({
+      readyToSave: this.isReadyToSave(this.state)
+    })
+  }
+
+  isReadyToSave = ({headline, imageFile}) => {
+    return (headline.length > 3) && (imageFile !== null)
+  }
+
+  openModal = (e) => this.setState({showModal: true})
 
   dismissModal = (e) => this.setState({showModal: false})
 
   toggleUploadBox = (e) => this.setState({showUploadBox: !this.state.showUploadBox})
 
-  handleChange = (e, { name, value }) => this.setState({ [name]: value })
+  handleChange = (e, { name, value }) => {
+    if (name === "headline") {
+      let readyToSavePayload = {headline: value, imageFile: this.state.imageFile}
+      this.setState({ 
+        [name]: value, 
+        readyToSave: this.isReadyToSave(readyToSavePayload) 
+      })
+    }
+    else {
+      this.setState({[name]: value})
+    }
+  }
 
   handleSubmit = (e) => { this.props.submitHandler(this.state) }
 
@@ -43,16 +66,20 @@ class StoryStepForm extends Component {
     let file = fileInput.files[0];
     let reader = new FileReader();
     if (file == null) {
+      this.setState({
+        readyToSave: this.isReadyToSave(this.state)
+      })
       alert(`No File Selected`)
     }
     else {
       reader.onloadend = () => {
-        console.log(file.name)
+        let readyToSavePayload = {headline: this.state.headline, imageFile: file }
         this.setState({
           showUpload: false,
           imageFile: file,
           imageFileName: file.name,
-          imagePreviewUrl: reader.result
+          imagePreviewUrl: reader.result,
+          readyToSave: this.isReadyToSave(readyToSavePayload)
         })
       }
       reader.readAsDataURL(file)
@@ -70,21 +97,12 @@ class StoryStepForm extends Component {
     return (
       <Container style={styles.formContainer}>
         <Segment clearing>
-        <Segment basic>
-          <Button 
-            basic 
-            negative 
-            content="Delete" 
-            floated="right" 
-            onClick={this.showModal}
-          />
-          <Confirm
-            content="This action cannot be undone. Are you sure you want to delete this step?"
-            open={this.state.showModal}
-            onCancel={this.dismissModal}
+          <DeleteStep 
+            modalShouldDisplay={this.state.showModal}
+            openModal={this.openModal}
+            dismissModal={this.dismissModal}
             onConfirm={this.props.deleteHandler}
           />
-        </Segment>
           <Form size="huge" style={styles.formContainer}>
             <ImagePreview 
               imageFileName={imageFileName}
@@ -126,6 +144,7 @@ class StoryStepForm extends Component {
               color="green" 
               content="Save this step"
               size="huge"
+              disabled={!this.state.readyToSave}
               onClick={this.handleSubmit} 
             />
           </Form>
