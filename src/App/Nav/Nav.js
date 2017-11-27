@@ -1,36 +1,70 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Menu } from 'semantic-ui-react';
+import { Menu, Header, Dropdown, Button, Segment, Responsive } from 'semantic-ui-react';
 
-// import './Nav.css';
-
-function confirmSignOut(handler) {
-  if (window.confirm("Would you like to sign out?")) {
-    handler();
-  }
+const styles = {
+  logo: {
+    desktop: { fontSize: '2em' },
+    mobile: { fontSize: '1.6em' }
+  },
+  signInButton: {
+    desktop: { margin: '0.2em' },
+    mobile: {} 
+  },
+  menuItem: {color: "black"}
 }
 
 const Nav = ({signedIn, currentUser, signOutHandler}) => {
   return (
-    <div id="nav-container">
-      <Link to="/" id="logo">
-        1000words
-      </Link>
-        {
-          !signedIn ? null :
-          <div id="nav-menu">
-            <div>
-              <Link to="/map">Map</Link>
-            </div>
-            <div>
-              <Link to="/pictures/new">Add</Link>
-            </div>
-            <div className="nav-item" onClick={e => confirmSignOut(signOutHandler)}>
-              {signedIn ? currentUser.name : null}
-            </div>
-          </div>
+    <Menu borderless fluid fixed="top" size="massive" inverted>
+      <Menu.Item>
+        <Responsive as={Segment} inverted minWidth={768}>
+          <Header  
+            inverted 
+            content="A Thousand Words" 
+            style={styles.logo.desktop}
+            as={Link}
+            to="/"
+          />
+        </Responsive>
+        <Responsive as={Segment} inverted maxWidth={768}>
+          <Header  
+            inverted 
+            content="ATW" 
+            style={styles.logo.mobile}
+            as={Link}
+            to="/"
+          />
+        </Responsive>
+      </Menu.Item>
+      <Responsive as={Menu.Item} minWidth={768}>
+        <Link to="/stories">My Stories</Link>
+      </Responsive>
+      <Menu.Item position="right">
+        {signedIn ? 
+          <Dropdown item text={currentUser.name} icon="user">
+            <Dropdown.Menu>
+              <Responsive as={Dropdown.Item} maxWidth={768}>
+                <Link to="/stories" style={styles.menuItem}>My Stories</Link>
+              </Responsive>
+              <Dropdown.Item onClick={signOutHandler}>
+                Sign Out
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown> : 
+          <Button 
+            basic 
+            inverted
+            color="green" 
+            size="huge" 
+            content="Sign in" 
+            style={styles.signInButton.desktop}
+            as={Link}
+            to='/signin'
+          />
         }
-    </div>
+      </Menu.Item>
+    </Menu>
   );
 };
 

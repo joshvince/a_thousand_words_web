@@ -3,15 +3,14 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 // Import the API clients and other helper modules
-import PictureApi from '../Api/PictureApi.js';
 import UserStorage from '../User/UserStorage.js';
 
 // Import components and styles
+import Nav from './Nav/Nav.js';
 import SignIn from '../User/SignIn.js';
-import PictureMap from '../Map/PictureMap.js';
 import Homepage from '../Homepage/Homepage.js';
 import StoryHomePage from '../Story/StoryHomePage.js';
-import StoryViewer from '../Story/Story/StoryViewer.js';
+import StoryViewer from '../Story/Story/Viewer/StoryViewer.js';
 import StoryCreator from '../Story/Story/Creator/StoryCreator.js';
 import './App.css';
 
@@ -19,11 +18,9 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state = {
-      pictureList: [],
       signedIn: false,
       currentUser: null
     }
-    this.updateWithPictures = this.updateWithPictures.bind(this);
     this.signInHandler = this.signInHandler.bind(this);
     this.signOutHandler = this.signOutHandler.bind(this);
   }
@@ -35,7 +32,6 @@ class App extends Component {
         signedIn: true,
         currentUser: storedUser
       })
-      this.updateWithPictures(storedUser.id)
     }
   }
 
@@ -45,7 +41,6 @@ class App extends Component {
       signedIn: true,
       currentUser: newUser
     })
-    this.updateWithPictures(newUser.id)
   }
 
   signOutHandler(){
@@ -56,21 +51,22 @@ class App extends Component {
     })
   }
 
-  updateWithPictures(userId){
-    PictureApi.getPicturesFromUser(userId).then(apiResponse => {
-      this.setState({
-        pictureList: apiResponse.Items,
-        totalPictures: apiResponse.Count
-      })
-    })
-  }
-
   render() {
     return (
       <Router>
         <div>
+          <Route path="/" render={() => {
+            return (
+              <Nav 
+                currentUser={this.state.currentUser} 
+                signedIn={this.state.signedIn}
+                signOutHandler={this.signOutHandler}
+              />
+            )
+          }} 
+          />
           <Route exact path="/" component={Homepage} />
-            <Route
+          <Route
             exact path="/signin"
             render={() => {
               return (
@@ -95,31 +91,20 @@ class App extends Component {
               }}
             />
             <Route exact path="/stories/new" 
-              render={() => <StoryCreator currentUser={this.state.currentUser} />} 
+              render={() => {
+                if (!this.state.signedIn) {
+                  return <SignIn signInHandler={this.signInHandler} />
+                }
+                else {
+                  return <StoryCreator currentUser={this.state.currentUser}/>;
+                }
+              }}
             />
             <Route 
               path="/stories/:storyId" 
               render={({match}) => <StoryViewer storyId={match.params.storyId} />}
             />
           </Switch>
-          <Route 
-            exact path="/map" 
-            render={({ location }) => { 
-              let shouldRenderPic = false;
-              let activePic = {};
-              if (location.state) {
-                shouldRenderPic = true;
-                activePic = location.state.activePic
-              }
-              return (
-                <PictureMap 
-                  pictureList={this.state.pictureList}
-                  renderWithPictureActive={shouldRenderPic} 
-                  activePicture={activePic}
-                />
-              );
-            }}
-          />
         </div>
       </Router>
     );

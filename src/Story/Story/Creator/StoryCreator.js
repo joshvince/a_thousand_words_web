@@ -8,12 +8,16 @@ import Uploader from './Uploader/Uploader.js';
 import StoryApi from '../../../Api/StoryApi.js';
 
 const styles = {
+  pageContainer: {marginTop: '5em'},
   header: {
     fontSize: '4em',
     padding: '0.4em'
   },
   headerInput: {
     margin: '1em'
+  },
+  actionButtons: {
+    marginBottom: '1em'
   }
 }
 
@@ -29,6 +33,8 @@ class StoryCreator extends Component {
       storyId: null
     }
   }
+
+  componentDidMount = () => window.scrollTo(0,0);
 
   initialiseStep = (key = 0) => {
     return {
@@ -112,7 +118,7 @@ class StoryCreator extends Component {
 
   render() {
     return (
-      <div>
+      <div style={styles.pageContainer}>
         {this.state.showUploader ? 
         <Uploader 
           isInProgress={this.state.uploadInProgress} 
@@ -141,6 +147,7 @@ class StoryCreator extends Component {
               size="massive" 
               content="Add new step" 
               onClick={this.addNewStep}
+              style={styles.actionButtons}
             /> 
             <Button
               size="massive"
@@ -148,6 +155,7 @@ class StoryCreator extends Component {
               content="Save this story"
               width={12}
               onClick={this.saveStory}
+              style={styles.actionButtons}
             />
         </Segment>
       </div>
