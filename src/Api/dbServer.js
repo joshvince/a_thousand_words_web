@@ -14,8 +14,14 @@ async function getSignedRequest(filename, fileType) {
   return await get(url)
 }
 
+// Get one story by its ID
 async function getOneStory(storyId){
   const url = `${API_URL}/stories/${storyId}`
+  return await get(url)
+}
+
+async function getStoriesByUser(userId){
+  const url = `${API_URL}/stories?user-id=${userId}`
   return await get(url)
 }
 
@@ -67,6 +73,7 @@ async function get(url) {
 
 const dbServer = {
   getSignedRequest: getSignedRequest,
+  getStoriesByUser: getStoriesByUser,
   getOneStory: getOneStory,
   uploadStory: uploadStory
 }
