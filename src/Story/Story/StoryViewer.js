@@ -13,10 +13,9 @@ class StoryViewer extends Component {
       displayLoader: true
     }
   }
-  componentDidMount = () => {
-    StoryApi.getOneStory(this.props.storyId).then(story => {
-      this.setState({storyData: story, displayLoader: false})
-    })
+  componentDidMount = async () => {
+    const story = await StoryApi.getOneStory(this.props.storyId)
+    this.setState({storyData: story, displayLoader: false})
   }
   render() {
     return (

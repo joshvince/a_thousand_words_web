@@ -4,18 +4,16 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 // Import the API clients and other helper modules
 import PictureApi from '../Api/PictureApi.js';
-import StoryApi from '../Api/StoryApi.js';
 import UserStorage from '../User/UserStorage.js';
 
 // Import components and styles
 import SignIn from '../User/SignIn.js';
 import PictureMap from '../Map/PictureMap.js';
-import PictureCreator from '../Picture/Creator/PictureCreator.js';
 import Homepage from '../Homepage/Homepage.js';
 import StoryHomePage from '../Story/StoryHomePage.js';
 import StoryViewer from '../Story/Story/StoryViewer.js';
 import StoryCreator from '../Story/Story/Creator/StoryCreator.js';
-// import './App.css';
+import './App.css';
 
 class App extends Component {
   constructor(props){

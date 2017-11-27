@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Segment, Header, Divider, Button, Loader, Dimmer } from 'semantic-ui-react';
-import { Redirect } from 'react-router-dom';
+import { Segment, Header, Divider, Button} from 'semantic-ui-react';
 
 import HeaderViewHandler from './Form/Header/ViewHandler.js';
 import StoryStepViewHandler from './Form/StoryStep/ViewHandler.js';
+import Uploader from './Uploader/Uploader.js';
 
 import StoryApi from '../../../Api/StoryApi.js';
 
@@ -23,8 +23,9 @@ class StoryCreator extends Component {
     this.state = {
       nextStepKey: 1,
       steps: [this.initialiseStep()],
-      displayLoader: false,
-      fireRedirect: false,
+      showUploader: false,
+      uploadInProgress: false,
+      uploadSuccess: null,
       storyId: null
     }
   }
@@ -90,35 +91,34 @@ class StoryCreator extends Component {
     }
   }
 
-  displayLoader = (e) => {
-    this.setState({displayLoader: true})
-    this.saveStory()
-  }
+  saveStory = (e) => {
+    e.preventDefault();
+    this.setState({showUploader: true, uploadInProgress: true})
 
-  saveStory = async () => {
-    try {
-      const resp = await StoryApi.create(this.state, this.props.currentUser.id)
-      this.redirectToStory(resp.uuid)
-      console.log(`Created a story in the DB: ${JSON.stringify(resp)}`)
-    } catch (error) {
-      this.setState({displayLoader: false})
+    StoryApi.create(this.state, this.props.currentUser.id).then(resp => {
+      this.setState({
+        uploadInProgress: false,
+        uploadSuccess: true, 
+        storyId: resp.uuid
+      })
+    }).catch(error => {
+      this.setState({
+        uploadInProgress: false,
+        uploadSuccess: false
+      })
       console.log(`Error creating the story: ${error}`)
-    }
-  }
-
-  redirectToStory = (storyId) => {
-    this.setState({
-      fireRedirect: true,
-      storyId: storyId
     })
   }
 
   render() {
     return (
       <div>
-        <Dimmer page active={this.state.displayLoader}>
-          <Loader size="huge" content="Uploading your story" indeterminate/>
-        </Dimmer>
+        {this.state.showUploader ? 
+        <Uploader 
+          isInProgress={this.state.uploadInProgress} 
+          result={this.state.uploadSuccess}
+          storyId={this.state.storyId}
+        /> : null}
         <Segment vertical inverted>
           <Header as="h1" content="Tell your story..." style={styles.header}/>
           <HeaderViewHandler submitHandler={this.updateFormData}/>
@@ -150,13 +150,9 @@ class StoryCreator extends Component {
               onClick={this.saveStory}
             />
         </Segment>
-        {this.state.fireRedirect && (
-          <Redirect to={{pathname: `/stories/${this.state.storyId}`}} />
-        )}
       </div>
     );
   }
 }
-
 
 export default StoryCreator;
