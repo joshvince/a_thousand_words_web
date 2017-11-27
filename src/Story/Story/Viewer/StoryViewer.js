@@ -41,7 +41,7 @@ class StoryViewer extends Component {
             this.state.storyData.steps.map((step,i) => {
               return <StoryStep step={step} key={i}/>
             }),
-            <StoryFooter key={this.state.storyData.description}/>
+            <StoryFooter key={999}/>
           ]
         }
       </div>

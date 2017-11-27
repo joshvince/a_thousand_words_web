@@ -1,18 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Grid, Header, Image, Segment, Icon } from 'semantic-ui-react';
-import PageHeader from '../App/Header/PageHeader.js';
+import { Grid, Header, Image, Segment, Icon } from 'semantic-ui-react';
+import PageHeader from './PageHeader.js';
 import PhotoFront from './photofront.jpg';
 
 
-const Homepage = () => {
-  const CTAButton = <Button primary size="huge" content="Get Started" as={Link} to="/stories" />
+const Homepage = () => { 
   return (
     <div>
       <PageHeader 
-        title='A Thousand Words'
-        subtitle='A place for photos with a story'
-        button={CTAButton}
+        title='Every photo tells a story'
+        subtitle='Some stories deserve to be told'
       />
       <Grid columns={2} container stackable style={{padding: '3em 0em'}}>
         <Grid.Column>

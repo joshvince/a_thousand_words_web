@@ -5,7 +5,7 @@ import Archive from './Archive/Archive.js';
 import StoryApi from '../Api/StoryApi.js';
 
 const styles = {
-  pageContainer: {marginTop: '5em', padding: '2em 0em'}
+  pageContainer: {marginTop: '6em', padding: '2em 0em'}
 }
 
 class StoryHomePage extends Component {

@@ -5,7 +5,8 @@ import { Redirect } from 'react-router-dom';
 
 const styles = {
   pageContainer: {marginTop: '5em', padding: '4em 0em'},
-  pageTitle: {fontSize: '4em', marginBottom: '1em'}
+  pageTitle: {fontSize: '4em', marginBottom: '1em'},
+  actionButtons: {marginBottom: '1em'}
 }
 
 class SignIn extends Component {
@@ -40,6 +41,7 @@ class SignIn extends Component {
                 key={i} 
                 onClick={e => this.signIn(usr)}
                 size="massive"
+                style={styles.actionButtons}
               />
             )
           })}

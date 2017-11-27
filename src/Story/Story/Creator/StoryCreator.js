@@ -15,6 +15,9 @@ const styles = {
   },
   headerInput: {
     margin: '1em'
+  },
+  actionButtons: {
+    marginBottom: '1em'
   }
 }
 
@@ -32,7 +35,7 @@ class StoryCreator extends Component {
   }
 
   componentDidMount = () => window.scrollTo(0,0);
-  
+
   initialiseStep = (key = 0) => {
     return {
       stepKey: key,
@@ -144,6 +147,7 @@ class StoryCreator extends Component {
               size="massive" 
               content="Add new step" 
               onClick={this.addNewStep}
+              style={styles.actionButtons}
             /> 
             <Button
               size="massive"
@@ -151,6 +155,7 @@ class StoryCreator extends Component {
               content="Save this story"
               width={12}
               onClick={this.saveStory}
+              style={styles.actionButtons}
             />
         </Segment>
       </div>
