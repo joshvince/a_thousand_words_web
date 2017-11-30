@@ -6,6 +6,9 @@
 # testing
 /coverage
 
+# Build folder should stay local
+/build
+
 # misc
 .DS_Store
 .env.local
