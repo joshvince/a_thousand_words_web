@@ -24,9 +24,9 @@ async function create(rawFormData, userId) {
       steps: steps
     }
     // Send it off to the DB
-    return dbServer.uploadStory(payload).then(resp => {
-      return resp.success ? resp.object : `Error creating the story in DB: ${resp.reason}`
-    })
+    return dbServer.uploadStory(payload)
+    .then(resp => { return resp })
+    .catch(error => { return error })
 
   } catch (error) {
     console.error(`error creating the steps: ${error}`)
