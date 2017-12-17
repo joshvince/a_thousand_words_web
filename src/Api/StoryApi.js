@@ -51,9 +51,35 @@ function createOneStoryStep(rawStepData, userId) {
         image: picture,
         stepKey: rawStepData.stepKey
       }
+      payload = validatePayload(payload)
       resolve(payload)  
     })
   });
+}
+
+function validatePayload(payload) {
+  return stripBlanks(payload)
+}
+
+function stripBlanks(rawStepData) {
+  let blanks = findBlanks(rawStepData)
+  
+  return (blanks.length) ? deleteBlanks(blanks, rawStepData) : rawStepData
+}
+
+function findBlanks(object) {
+  let entries = Object.entries(object);
+  let blankEntries = entries.filter( entry => isBlank(entry[0], entry[1]) )
+  return blankEntries.map(entry => entry[0])
+}
+
+function isBlank(key,value) {
+  return (value.length === 0) ? true : false
+}
+
+function deleteBlanks(keys, object) {
+  keys.forEach( key => delete object[key] )
+  return object
 }
 
 const StoryApi = {
@@ -63,4 +89,3 @@ const StoryApi = {
 }
 
 export default StoryApi;
-
