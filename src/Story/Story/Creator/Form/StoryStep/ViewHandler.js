@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import StoryStepForm from './Form.js';
 import StoryStepView from './View.js';
 
+const styles = {
+  container: {
+    margin: '2em 1em'
+  }
+}
+
 class StoryStepViewHandler extends Component {
   constructor(props){
     super(props)
@@ -15,6 +21,16 @@ class StoryStepViewHandler extends Component {
         imagePreviewUrl: ""
       }
     }
+    this.updateParentWithData(this.state.data, true)
+  }
+  updateParentWithData = (data, editing) => {
+    const payload = {
+      editing: editing,
+      section: "step",
+      data: data, 
+      stepKey: this.props.stepKey
+    }
+    this.props.submitHandler(payload)
   }
   updateData = (newData) => {
     this.setState({
@@ -22,6 +38,7 @@ class StoryStepViewHandler extends Component {
       editing: false
     })
     const payload = {
+      editing: false,
       section: "step",
       data: newData, 
       stepKey: this.props.stepKey
@@ -35,11 +52,18 @@ class StoryStepViewHandler extends Component {
   }
   toggleEdit = () => {
     this.setState({editing: true})
+    const payload = {
+      editing: true,
+      section: "step",
+      data: this.state.data, 
+      stepKey: this.props.stepKey
+    }
+    this.props.submitHandler(payload)
   }
   render() {
     const displayForm = this.state.editing;
     return (
-      <div>
+      <div style={styles.container}>
         {displayForm ? 
           <StoryStepForm 
             stepKey={this.props.stepKey}

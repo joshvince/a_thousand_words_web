@@ -145,8 +145,8 @@ class StoryStepForm extends Component {
             <Form.Button
               basic
               color="green" 
-              content="Save this step"
-              size="huge"
+              content="Confirm this step"
+              size="massive"
               disabled={!this.state.readyToSave}
               onClick={this.handleSubmit} 
             />

@@ -3,6 +3,7 @@ import { Segment, Header, Divider, Button} from 'semantic-ui-react';
 
 import HeaderViewHandler from './Form/Header/ViewHandler.js';
 import StoryStepViewHandler from './Form/StoryStep/ViewHandler.js';
+import AddNewStep from './Form/StoryStep/AddNewStep.js';
 import Uploader from './Uploader/Uploader.js';
 
 import StoryApi from '../../../Api/StoryApi.js';
@@ -10,7 +11,7 @@ import StoryApi from '../../../Api/StoryApi.js';
 const styles = {
   pageContainer: {marginTop: '5em'},
   header: {
-    fontSize: '4em',
+    fontSize: '3em',
     padding: '0.4em'
   },
   headerInput: {
@@ -27,6 +28,7 @@ class StoryCreator extends Component {
     this.state = {
       nextStepKey: 1,
       steps: [this.initialiseStep()],
+      editing: true,
       showUploader: false,
       uploadInProgress: false,
       uploadSuccess: null,
@@ -64,13 +66,13 @@ class StoryCreator extends Component {
     if (index !== -1) {
       // you found a dupe, replace it
       stepArray.splice(index, 1, newStepData);
-      this.setState({ steps: stepArray })
     }
     else {
       // add it to the end of the array
       stepArray.push(newStepData)
-      this.setState({ steps: stepArray })
     }
+    let editing = stepArray.some( step => step.editing )
+    this.setState({ steps: stepArray, editing: editing })
   }
   
   addNewStep = () => {
@@ -90,7 +92,8 @@ class StoryCreator extends Component {
     if (index !== -1) {
       // delete it
       stepArray.splice(index, 1);
-      this.setState({ steps: stepArray })
+      let editing = stepArray.some( step => step.editing )
+      this.setState({ steps: stepArray, editing: editing })
     }
     else {
       return null
@@ -135,38 +138,36 @@ class StoryCreator extends Component {
           storyId={this.state.storyId}
         /> : null}
         <Segment vertical inverted>
-          <Header as="h1" content="Tell your story..." style={styles.header}/>
+          <Header as="h2" content="Give your story a title" style={styles.header}/>
           <HeaderViewHandler submitHandler={this.updateFormData}/>
         </Segment>
         <Segment vertical>
+          <Header as="h2" content="Add some images and text" style={styles.header}/>
           {this.state.steps.map((step, i) => {
             return(
-              <div key={i}>
-                <StoryStepViewHandler 
-                  stepKey={step.stepKey} 
-                  submitHandler={this.updateFormData} 
-                  deleteHandler={this.deleteStep}
-                />
-                <Divider section />
-              </div>
+              <StoryStepViewHandler 
+                stepKey={step.stepKey} 
+                submitHandler={this.updateFormData} 
+                deleteHandler={this.deleteStep}
+                key={i}
+              />
             )
           })}
-            <Button 
-              secondary 
-              size="massive" 
-              content="Add new step" 
-              onClick={this.addNewStep}
-              style={styles.actionButtons}
-            /> 
+            <AddNewStep 
+              clickHandler={this.addNewStep} 
+              disabled={this.state.editing}
+            />
+          </Segment>
+            <Header as="h2" content="Save and share" style={styles.header}/>
             <Button
               size="massive"
               positive
-              content="Save this story"
+              content="I'm finished"
               width={12}
               onClick={this.saveStory}
               style={styles.actionButtons}
+              disabled={this.state.editing}
             />
-        </Segment>
       </div>
     );
   }

@@ -44,7 +44,7 @@ class HeaderForm extends Component {
         />
         <Button inverted 
           color="green" 
-          content="Save"
+          content="Confirm"
           size="huge"
           onClick={this.handleSubmit} />
       </Container>
