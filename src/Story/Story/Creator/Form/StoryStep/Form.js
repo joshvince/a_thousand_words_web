@@ -57,7 +57,10 @@ class StoryStepForm extends Component {
     }
   }
 
-  handleSubmit = (e) => { this.props.submitHandler(this.state) }
+  handleSubmit = (e) => { 
+    e.preventDefault();
+    this.props.submitHandler(this.state) 
+  }
 
   handleImageSelect = (e) => {
     e.preventDefault();
