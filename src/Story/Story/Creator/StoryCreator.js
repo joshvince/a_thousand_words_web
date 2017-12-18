@@ -102,12 +102,21 @@ class StoryCreator extends Component {
     this.setState({showUploader: true, uploadInProgress: true})
 
     StoryApi.create(this.state, this.props.currentUser.id).then(resp => {
-      this.setState({
-        uploadInProgress: false,
-        uploadSuccess: true, 
-        storyId: resp.uuid
-      })
-    }).catch(error => {
+      if (resp.success) {
+        this.setState({
+          uploadInProgress: false,
+          uploadSuccess: true, 
+          storyId: resp.object.uuid
+        })
+      }
+      else {
+        this.setState({
+          uploadInProgress: false,
+          uploadSuccess: false
+        })
+      }
+    })
+    .catch(error => {
       this.setState({
         uploadInProgress: false,
         uploadSuccess: false
