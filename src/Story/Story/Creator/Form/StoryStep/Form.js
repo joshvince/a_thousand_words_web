@@ -42,6 +42,12 @@ class StoryStepForm extends Component {
 
   dismissModal = (e) => this.setState({showModal: false})
 
+  handleDelete = (e) => {
+    e.preventDefault();
+    this.setState({showModal: false})
+    this.props.deleteHandler();
+  }
+
   toggleUploadBox = (e) => this.setState({showUploadBox: !this.state.showUploadBox})
 
   handleChange = (e, { name, value }) => {

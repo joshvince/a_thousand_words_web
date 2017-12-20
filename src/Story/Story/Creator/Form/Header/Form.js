@@ -16,7 +16,26 @@ class HeaderForm extends Component {
     }
   }
 
-  handleChange = (e, { name, value }) => this.setState({ [name]: value })
+  componentDidMount = () => {
+    this.setState({
+      readyToSave: this.isReadyToSave(this.state.title)
+    })
+  }
+
+  isReadyToSave = (title) => {
+    return title.length > 3
+  }
+
+  handleChange = (e, { name, value }) => {
+    let titleVal = this.state.title;
+    if (name === 'title') {
+      titleVal = value
+    }
+    this.setState({ 
+      [name]: value,
+      readyToSave: this.isReadyToSave(titleVal) 
+    })
+  }
 
   handleSubmit = (e) => {
     const formData = this.state;
@@ -36,7 +55,7 @@ class HeaderForm extends Component {
         />
         <Input inverted fluid 
           size="huge" 
-          placeholder="Enter a subtitle" 
+          placeholder="Enter a description (optional)" 
           style={styles.headerInput}
           name="subtitle"
           value={this.state.subtitle}
@@ -44,8 +63,9 @@ class HeaderForm extends Component {
         />
         <Button inverted 
           color="green" 
-          content="Confirm"
+          content="Confirm the title"
           size="huge"
+          disabled={!this.state.readyToSave}
           onClick={this.handleSubmit} />
       </Container>
     );

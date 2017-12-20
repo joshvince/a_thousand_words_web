@@ -41,8 +41,7 @@ class StoryStepViewHandler extends Component {
     })
     this.updateParentWithData(newData, false)
   }
-  handleDelete = (e) => {
-    e.preventDefault();
+  handleDelete = () => {
     let key = this.props.stepKey
     this.props.deleteHandler(key)
   }

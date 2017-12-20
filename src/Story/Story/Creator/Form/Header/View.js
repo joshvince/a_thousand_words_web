@@ -17,7 +17,7 @@ const HeaderView = ({title, subtitle, submitHandler}) => {
     <Container text>
       <Header as='h1' content={title} inverted style={styles.title}/>
       <Header as='h2' content={subtitle} inverted style={styles.subtitle} />
-      <Button inverted size="big" content="Edit" onClick={e => submitHandler()} />
+      <Button inverted size="big" content="Edit the title" onClick={e => submitHandler()} />
     </Container>
   );
 };

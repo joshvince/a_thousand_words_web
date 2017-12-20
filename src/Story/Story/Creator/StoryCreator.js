@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Segment, Header, Divider, Button} from 'semantic-ui-react';
 
+import EmptySteps from './Empty/EmptySteps.js';
 import HeaderViewHandler from './Form/Header/ViewHandler.js';
 import StoryStepViewHandler from './Form/StoryStep/ViewHandler.js';
 import AddNewStep from './Form/StoryStep/AddNewStep.js';
@@ -35,6 +36,7 @@ class StoryCreator extends Component {
       uploadSuccess: null,
       storyId: null
     }
+    this.deleteStep = this.deleteStep.bind(this)
   }
 
   componentDidMount = () => window.scrollTo(0,0);
@@ -144,31 +146,33 @@ class StoryCreator extends Component {
         </Segment>
         <Segment vertical>
           <Header as="h2" content="Add some images and text" style={styles.header}/>
-          {this.state.steps.map((step, i) => {
-            return(
-              <StoryStepViewHandler 
-                stepKey={step.stepKey} 
-                submitHandler={this.updateFormData} 
-                deleteHandler={this.deleteStep}
-                key={i}
-              />
-            )
-          })}
+          {this.state.steps.length ? 
+            this.state.steps.map((step, i) => {
+              return(
+                <StoryStepViewHandler 
+                  stepKey={step.stepKey} 
+                  submitHandler={this.updateFormData} 
+                  deleteHandler={this.deleteStep}
+                  key={step.stepKey}
+                />
+              )
+            }) : <EmptySteps />
+          }
             <AddNewStep 
               clickHandler={this.addNewStep} 
               disabled={this.state.editing}
             />
           </Segment>
-            <Header as="h2" content="Save and share" style={styles.header}/>
-            <Button
-              size="massive"
-              positive
-              content="I'm finished"
-              width={12}
-              onClick={this.saveStory}
-              style={styles.actionButtons}
-              disabled={this.state.editing}
-            />
+          <Header as="h2" content="Save and share" style={styles.header}/>
+          <Button
+            size="massive"
+            positive
+            content="I'm finished"
+            width={12}
+            onClick={this.saveStory}
+            style={styles.actionButtons}
+            disabled={this.state.editing}
+          />
       </div>
     );
   }
