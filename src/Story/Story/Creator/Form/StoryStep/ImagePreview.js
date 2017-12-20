@@ -16,10 +16,6 @@ const styles = {
   }
 }
 
-const fileInfo = (name, size) => {
-  return `${name} (${presentFileSize(size)})`
-}
-
 const presentFileSize = (bytes) => {
   return `${(bytes / 1000000).toFixed(2)}mb`
 }
@@ -34,7 +30,7 @@ const ImagePreview = ({imagePreviewUrl, imageFileName, imageFileSize}) => {
       </div>
       <p style={styles.text}>
         {imageFileName ? 
-          fileInfo(imageFileName, imageFileSize) : "No image uploaded yet"}
+          presentFileSize(imageFileSize) : "No image uploaded yet"}
       </p>
     </Segment>
   );

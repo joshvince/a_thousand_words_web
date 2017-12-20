@@ -12,7 +12,8 @@ const styles = {
   pageContainer: {marginTop: '5em'},
   header: {
     fontSize: '3em',
-    padding: '0.4em'
+    padding: '0.4em',
+    margin: 0
   },
   headerInput: {
     margin: '1em'

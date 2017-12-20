@@ -78,7 +78,7 @@ class StoryStepForm extends Component {
       reader.onloadend = () => {
         let readyToSavePayload = {headline: this.state.headline, imageFile: file }
         this.setState({
-          showUpload: false,
+          showUploadBox: false,
           imageFile: file,
           imageFileName: file.name,
           imagePreviewUrl: reader.result,
@@ -97,6 +97,7 @@ class StoryStepForm extends Component {
     let imagePreviewUrl = this.state.imagePreviewUrl;
     let imageFileName = this.state.imageFileName;
     let fileSize = this.state.imageFile ? this.state.imageFile.size : null
+    let imageButtonLabel = this.state.imageFileName ? "change image": "upload new image"
     return (
       <Container style={styles.formContainer}>
         <Segment clearing>
@@ -115,7 +116,7 @@ class StoryStepForm extends Component {
             <Button 
               basic 
               style={styles.uploadButton}
-              content="upload new image" 
+              content={imageButtonLabel}
               onClick={this.toggleUploadBox} 
             />
           
