@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment, Header, Divider, Button} from 'semantic-ui-react';
+import { Segment, Header, Divider, Button, Container} from 'semantic-ui-react';
 
 import EmptySteps from './Empty/EmptySteps.js';
 import HeaderViewHandler from './Form/Header/ViewHandler.js';
@@ -10,11 +10,18 @@ import Uploader from './Uploader/Uploader.js';
 import StoryApi from '../../../Api/StoryApi.js';
 
 const styles = {
-  pageContainer: {marginTop: '5em'},
+  pageContainer: {marginTop: '6em'},
   header: {
-    fontSize: '3em',
-    padding: '0.4em',
-    margin: 0
+    header: {
+      fontSize: '4em'
+    },
+    text: {
+      fontSize: '1.6em',
+      margin: '1.5em 0'
+    }
+  },
+  subheader: {
+    fontSize: '3em'
   },
   headerInput: {
     margin: '1em'
@@ -44,9 +51,9 @@ class StoryCreator extends Component {
   initialiseStep = (key = 0) => {
     return {
       stepKey: key,
+      editing: true,
       data: {
         headline: "",
-        year: "",
         description: "",
         imageFile: null,
         imageFileName: null,
@@ -140,17 +147,28 @@ class StoryCreator extends Component {
           result={this.state.uploadSuccess}
           storyId={this.state.storyId}
         /> : null}
-        <Segment vertical inverted>
-          <Header as="h2" content="Give your story a title" style={styles.header}/>
+        <Segment basic inverted vertical>
+          <Header as="h1" content="Create a new story" style={styles.header.header}/>
+          <Container text>
+            <p style={styles.header.text}>
+              Use pictures and text to tell your story.
+              Create more 'parts' to add more images.
+              Hit Save when you're finished.
+            </p>
+          </Container>
+        </Segment>
+        <Segment basic vertical>
           <HeaderViewHandler submitHandler={this.updateFormData}/>
         </Segment>
+        <Divider/>
         <Segment vertical>
-          <Header as="h2" content="Add some images and text" style={styles.header}/>
           {this.state.steps.length ? 
             this.state.steps.map((step, i) => {
               return(
                 <StoryStepViewHandler 
                   stepKey={step.stepKey} 
+                  editing={step.editing}
+                  data={step.data}
                   submitHandler={this.updateFormData} 
                   deleteHandler={this.deleteStep}
                   key={step.stepKey}
@@ -158,21 +176,21 @@ class StoryCreator extends Component {
               )
             }) : <EmptySteps />
           }
-            <AddNewStep 
-              clickHandler={this.addNewStep} 
-              disabled={this.state.editing}
-            />
-          </Segment>
-          <Header as="h2" content="Save and share" style={styles.header}/>
-          <Button
-            size="massive"
-            positive
-            content="I'm finished"
-            width={12}
-            onClick={this.saveStory}
-            style={styles.actionButtons}
+          <AddNewStep 
+            clickHandler={this.addNewStep} 
             disabled={this.state.editing}
           />
+        </Segment>
+        <Header as="h2" content="Finished?" style={styles.subheader}/>
+        <Button
+          size="massive"
+          positive
+          content="Done"
+          width={12}
+          onClick={this.saveStory}
+          style={styles.actionButtons}
+          disabled={this.state.editing}
+        />
       </div>
     );
   }

@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import { Container, Input, Button } from 'semantic-ui-react';
+import { Container, Input, Button, Header } from 'semantic-ui-react';
 
 const styles = {
   headerInput: {
     margin: '1em'
+  },
+  explainerText: {
+    margin: '0.7em',
+    fontSize: '2em'
   }
 }
 
@@ -45,17 +49,22 @@ class HeaderForm extends Component {
   render() {
     return (
       <Container text>
-        <Input inverted fluid
-          size="massive"  
-          placeholder="Enter a title"
+        <Header 
+          as='h3' 
+          content='Give your story a title'
+          style={styles.explainerText}  
+        />
+        <Input fluid
+          size="huge"  
+          placeholder="eg: 'My childhood homes'"
           style={styles.headerInput}
           name="title"
           value={this.state.title}
           onChange={this.handleChange}
         />
-        <Input inverted fluid 
+        <Input fluid 
           size="huge" 
-          placeholder="Enter a description (optional)" 
+          placeholder="Enter a description for your story (optional)" 
           style={styles.headerInput}
           name="subtitle"
           value={this.state.subtitle}
@@ -63,7 +72,7 @@ class HeaderForm extends Component {
         />
         <Button inverted 
           color="green" 
-          content="Confirm the title"
+          content="Preview the title"
           size="huge"
           disabled={!this.state.readyToSave}
           onClick={this.handleSubmit} />

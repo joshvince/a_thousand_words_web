@@ -11,7 +11,7 @@ const DeleteStep = ({modalShouldDisplay, openModal, dismissModal, onConfirm}) =>
         onClick={openModal}
       />
       <Confirm
-        content="This action cannot be undone. Are you sure you want to delete this step?"
+        content="This action cannot be undone. Are you sure you want to delete this part of your story?"
         open={modalShouldDisplay}
         onCancel={dismissModal}
         onConfirm={onConfirm}

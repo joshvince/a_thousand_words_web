@@ -13,7 +13,7 @@ const AddNewStep = ({clickHandler, disabled}) => {
       <Button 
         basic 
         size="massive" 
-        content="Add new step" icon="plus"
+        content="Add new part" icon="plus"
         onClick={clickHandler}
         disabled={disabled}
         />
