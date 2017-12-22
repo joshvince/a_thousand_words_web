@@ -1,17 +1,27 @@
 import React, { Component } from 'react';
-import { Segment, Header, Divider, Button} from 'semantic-ui-react';
+import { Segment, Header, Divider, Button, Container} from 'semantic-ui-react';
 
+import EmptySteps from './Empty/EmptySteps.js';
 import HeaderViewHandler from './Form/Header/ViewHandler.js';
 import StoryStepViewHandler from './Form/StoryStep/ViewHandler.js';
+import AddNewStep from './Form/StoryStep/AddNewStep.js';
 import Uploader from './Uploader/Uploader.js';
 
 import StoryApi from '../../../Api/StoryApi.js';
 
 const styles = {
-  pageContainer: {marginTop: '5em'},
+  pageContainer: {marginTop: '6em'},
   header: {
-    fontSize: '4em',
-    padding: '0.4em'
+    header: {
+      fontSize: '4em'
+    },
+    text: {
+      fontSize: '1.6em',
+      margin: '1.5em 0'
+    }
+  },
+  subheader: {
+    fontSize: '3em'
   },
   headerInput: {
     margin: '1em'
@@ -27,11 +37,13 @@ class StoryCreator extends Component {
     this.state = {
       nextStepKey: 1,
       steps: [this.initialiseStep()],
+      editing: true,
       showUploader: false,
       uploadInProgress: false,
       uploadSuccess: null,
       storyId: null
     }
+    this.deleteStep = this.deleteStep.bind(this)
   }
 
   componentDidMount = () => window.scrollTo(0,0);
@@ -39,9 +51,9 @@ class StoryCreator extends Component {
   initialiseStep = (key = 0) => {
     return {
       stepKey: key,
+      editing: true,
       data: {
         headline: "",
-        year: "",
         description: "",
         imageFile: null,
         imageFileName: null,
@@ -64,13 +76,13 @@ class StoryCreator extends Component {
     if (index !== -1) {
       // you found a dupe, replace it
       stepArray.splice(index, 1, newStepData);
-      this.setState({ steps: stepArray })
     }
     else {
       // add it to the end of the array
       stepArray.push(newStepData)
-      this.setState({ steps: stepArray })
     }
+    let editing = stepArray.some( step => step.editing )
+    this.setState({ steps: stepArray, editing: editing })
   }
   
   addNewStep = () => {
@@ -90,7 +102,8 @@ class StoryCreator extends Component {
     if (index !== -1) {
       // delete it
       stepArray.splice(index, 1);
-      this.setState({ steps: stepArray })
+      let editing = stepArray.some( step => step.editing )
+      this.setState({ steps: stepArray, editing: editing })
     }
     else {
       return null
@@ -134,39 +147,50 @@ class StoryCreator extends Component {
           result={this.state.uploadSuccess}
           storyId={this.state.storyId}
         /> : null}
-        <Segment vertical inverted>
-          <Header as="h1" content="Tell your story..." style={styles.header}/>
+        <Segment basic inverted vertical>
+          <Header as="h1" content="Create a new story" style={styles.header.header}/>
+          <Container text>
+            <p style={styles.header.text}>
+              Use pictures and text to tell your story.
+              Create more 'parts' to add more images.
+              Hit Save when you're finished.
+            </p>
+          </Container>
+        </Segment>
+        <Segment basic vertical>
           <HeaderViewHandler submitHandler={this.updateFormData}/>
         </Segment>
+        <Divider/>
         <Segment vertical>
-          {this.state.steps.map((step, i) => {
-            return(
-              <div key={i}>
+          {this.state.steps.length ? 
+            this.state.steps.map((step, i) => {
+              return(
                 <StoryStepViewHandler 
                   stepKey={step.stepKey} 
+                  editing={step.editing}
+                  data={step.data}
                   submitHandler={this.updateFormData} 
                   deleteHandler={this.deleteStep}
+                  key={step.stepKey}
                 />
-                <Divider section />
-              </div>
-            )
-          })}
-            <Button 
-              secondary 
-              size="massive" 
-              content="Add new step" 
-              onClick={this.addNewStep}
-              style={styles.actionButtons}
-            /> 
-            <Button
-              size="massive"
-              positive
-              content="Save this story"
-              width={12}
-              onClick={this.saveStory}
-              style={styles.actionButtons}
-            />
+              )
+            }) : <EmptySteps />
+          }
+          <AddNewStep 
+            clickHandler={this.addNewStep} 
+            disabled={this.state.editing}
+          />
         </Segment>
+        <Header as="h2" content="Finished?" style={styles.subheader}/>
+        <Button
+          size="massive"
+          positive
+          content="Done"
+          width={12}
+          onClick={this.saveStory}
+          style={styles.actionButtons}
+          disabled={this.state.editing}
+        />
       </div>
     );
   }

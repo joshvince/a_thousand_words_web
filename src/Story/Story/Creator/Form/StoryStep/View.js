@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Segment, Container, Header, Button, Icon, Image} from 'semantic-ui-react';
 
 const styles = {
@@ -17,29 +17,43 @@ const styles = {
     fontSize: '1.4em'
   }
 }
-const StoryStepView = ({headline, year, description, imagePreviewUrl, submitHandler}) => {
-  const noImage = (
-    <Container fluid>
-      <Icon name="image" size="massive" color="red"/>
-      <p style={styles.warningText}>You still need to upload an image</p>
-    </Container>
-  )
-  const imagePreview = (
-    <Container fluid>
-      <Image src={imagePreviewUrl} size="massive" centered/>
-    </Container>
-  )
-  return (
-    <Container fluid>
-      <Segment vertical style={styles.container}>
-      {imagePreviewUrl ? imagePreview : noImage}
-      <Header as='h2' content={headline} style={styles.headline}/>
-      <Header as='h2' content={year} />
-      <p style={styles.description}>{description}</p>
-      <Button basic size="big" content="Edit this step" onClick={e => submitHandler()} />
-      </Segment>
-    </Container>
-  );
-};
+
+class StoryStepView extends Component {
+
+  componentDidMount = () => {
+    let key = this.props.stepKey
+    console.log(`mounted a view component with stepkey ${key}`)
+    this[`view${key}`].scrollIntoView(true, {behavior: 'smooth'});
+    window.scrollBy(0, -100)
+  }
+
+  render() {
+    return (
+      <div ref={el => { this[`view${this.props.stepKey}`] = el; }}>
+        <Container fluid>
+          <Segment vertical style={styles.container}>
+            {this.props.imagePreviewUrl ? 
+              <Container fluid>
+                <Image src={this.props.imagePreviewUrl} size="massive" centered/>
+              </Container> : 
+              <Container fluid>
+                <Icon name="image" size="massive" color="red"/>
+                <p style={styles.warningText}>You still need to upload an image</p>
+              </Container>
+            }
+            <Header as='h2' content={this.props.headline} style={styles.headline}/>
+            <p style={styles.description}>{this.props.description}</p>
+            <Button 
+              basic 
+              size="big" 
+              content="Edit this part" 
+              onClick={e => this.props.submitHandler()} 
+            />
+          </Segment>
+        </Container>
+      </div>
+    );
+  }
+}
 
 export default StoryStepView;
