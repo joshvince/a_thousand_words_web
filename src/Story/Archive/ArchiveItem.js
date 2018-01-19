@@ -7,7 +7,7 @@ const styles = {
     fontSize: '2rem'
   }
 }
-const ArchiveItem = ({storyData, shouldCenter}) => {
+const ArchiveItem = ({storyData}) => {
   return (
     <Card as={Link} to={`/stories/${storyData.uuid}`} >
       <Card.Content>
