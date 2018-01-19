@@ -5,7 +5,12 @@ import Archive from './Archive/Archive.js';
 import StoryApi from '../Api/StoryApi.js';
 
 const styles = {
-  pageContainer: {marginTop: '6em', padding: '2em 0em'}
+  pageContainer: {
+    marginTop: '6em', padding: '2em 0em'
+  },
+  pageHeader: {
+    fontSize: '3em'
+  }
 }
 
 class StoryHomePage extends Component {
@@ -24,11 +29,9 @@ class StoryHomePage extends Component {
     return (
       <div style={styles.pageContainer}>
         <Segment vertical basic>
-          <Header 
-            as='h1' 
-            content={`${this.props.currentUser.name}'s Stories`} 
-            style={{fontSize: '3em'}}
-          />
+          <Header as='h1' style={styles.pageHeader}>
+            {`${this.props.currentUser.name}'s Archive`}
+          </Header>
         </Segment>
         <Container >
           <Archive storyList={this.state.storyList} />
