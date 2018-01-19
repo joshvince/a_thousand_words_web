@@ -17,12 +17,12 @@ const EmptyArchive = () => {
     <Container>
       <Header 
         style={styles.header} 
-        color="teal" 
+        color="blue" 
         icon
         as={Link}
         to="/stories/new"
       >
-        <Icon name="write" size="huge" color="teal"/>
+        <Icon name="write" size="huge" color="blue"/>
         You don't have any stories yet
       <Header.Subheader style={styles.text}>
         Click to get started

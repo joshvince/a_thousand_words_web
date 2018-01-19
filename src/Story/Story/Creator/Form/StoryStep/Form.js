@@ -160,7 +160,7 @@ class StoryStepForm extends Component {
             />
             <Form.Button
               basic
-              color="green" 
+              color="blue" 
               content="Preview this part"
               size="massive"
               disabled={!this.state.readyToSave}

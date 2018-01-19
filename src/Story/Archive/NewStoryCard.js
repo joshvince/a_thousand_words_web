@@ -16,7 +16,7 @@ const NewStoryCard = () => {
       <Card.Content>
         <Card.Header>
           <div style={styles.iconWrapper}> 
-            <Icon name="write" size="huge" color="teal"/>
+            <Icon name="write" size="huge" color="blue"/>
           </div>
         </Card.Header>
       </Card.Content>

@@ -70,8 +70,9 @@ class HeaderForm extends Component {
           value={this.state.subtitle}
           onChange={this.handleChange}
         />
-        <Button inverted 
-          color="green" 
+        <Button 
+          basic
+          color="blue" 
           content="Preview the title"
           size="huge"
           disabled={!this.state.readyToSave}
