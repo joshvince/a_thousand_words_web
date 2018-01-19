@@ -38,44 +38,14 @@ const FORMDATA = {
   ]
 }
 
-const BLANKFORM = {
-  header: {
-    title: "my cool title",
-    subtitle: "my cool subtitle"
-  },
-  steps: [
-    {
-      stepKey: 0,
-      data: {
-        headline: "my headline",
-        description: "",
-        imageFile: {
-          name: "mypic.jpg",
-          type: "jpg"
-        },
-        imageFileName: "mypic.jpg"
-      },
-      section: "step"
-    }
-  ]
-}
-
 describe('#uploadStory', function () {
 
   it('should create an object representing the correct story schema', async () => {
     expect.assertions(1)
     const story = await StoryApi.create(FORMDATA, "123ID")
-    const keys = Object.keys(story).sort()
+    const keys = Object.keys(story.object).sort()
 
     expect(keys).toMatchObject(STORYSCHEMA)
-  });
-
-  it('should strip out blanks to avoid validation errors', async () => {
-    expect.assertions(1)
-    const story = await StoryApi.create(BLANKFORM, "4567ID")
-    const stepKeys = Object.keys(story.steps[0])
-
-    expect(stepKeys).not.toContain("description");
   });
   
 });
