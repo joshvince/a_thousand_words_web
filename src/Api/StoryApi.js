@@ -1,5 +1,6 @@
 /* CRUD operations for stories */
 import PictureApi from './PictureApi';
+import Helpers from './Helpers';
 import dbServer from './dbServer';
 var uuidv4 = require('uuid');
 
@@ -23,8 +24,9 @@ async function create(rawFormData, userId) {
       subtitle: rawFormData.header.subtitle,
       steps: steps
     }
+    let validatedPayload = validatePayload(payload)
     // Send it off to the DB
-    return dbServer.uploadStory(payload)
+    return dbServer.uploadStory(validatedPayload)
     .then(resp => { return resp })
     .catch(error => { return error })
 
@@ -58,28 +60,7 @@ function createOneStoryStep(rawStepData, userId) {
 }
 
 function validatePayload(payload) {
-  return stripBlanks(payload)
-}
-
-function stripBlanks(rawStepData) {
-  let blanks = findBlanks(rawStepData)
-  
-  return (blanks.length) ? deleteBlanks(blanks, rawStepData) : rawStepData
-}
-
-function findBlanks(object) {
-  let entries = Object.entries(object);
-  let blankEntries = entries.filter( entry => isBlank(entry[0], entry[1]) )
-  return blankEntries.map(entry => entry[0])
-}
-
-function isBlank(key,value) {
-  return (value.length === 0) ? true : false
-}
-
-function deleteBlanks(keys, object) {
-  keys.forEach( key => delete object[key] )
-  return object
+  return Helpers.stripBlanks(payload)
 }
 
 const StoryApi = {
