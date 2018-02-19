@@ -5,7 +5,23 @@ import dbServer from './dbServer';
 var uuidv4 = require('uuid');
 const API_URL = process.env.REACT_APP_API_URL
 
-async function create(file, userId){
+async function create(file, name, userId) {
+  const pictureId = uuidv4();
+  // get presigned URL for S3
+  let s3FileName = buildFileName(file.name, pictureId)
+  try {
+    const signedUrl = await dbServer.getSignedRequest(s3FileName, file.type);
+    // Upload the image itself to S3.
+    try {
+      const imageUrl = await S3Upload(file, signedUrl)
+      // Create the record in the database
+      let payload = { userId: userId, uuid: pictureId, url: imageUrl, name: name }
+      return await dbServer.uploadPicture(payload).then(resp => resp)
+    } catch (error) { console.log(`Error posting to S3`) }
+  } catch (error) { console.log(`Error fetching the signed request`) }
+}
+
+async function createWithinStory(file, userId){
   const imageUuid = uuidv4();
   // Get a presigned URL from the server
   let s3FileName = buildFileName(file.name, imageUuid)
@@ -62,8 +78,8 @@ function buildFileName(filename, uuid) {
 const PictureApi = {
   getPicturesFromUser: getPicturesFromUser,
   getAllPictures: getAllPictures,
-  uploadImage: create,
-  create: create
+  createPicture: create,
+  createWithinStory: createWithinStory
 }
 
 export default PictureApi;
