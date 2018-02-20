@@ -38,7 +38,7 @@ const Nav = ({signedIn, currentUser, signOutHandler}) => {
         </Responsive>
       </Menu.Item>
       <Responsive as={Menu.Item} minWidth={768}>
-        <Link to="/stories">My Archive</Link>
+        <Link to="/archive">My Archive</Link>
       </Responsive>
       <Responsive as={Menu.Item} minWidth={768}>
         <Link to="/stories/new">New Story</Link>

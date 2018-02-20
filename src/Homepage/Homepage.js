@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Grid, Header, Image, Segment, Icon } from 'semantic-ui-react';
 import PageHeader from './PageHeader.js';
 import PhotoFront from './photofront.jpg';

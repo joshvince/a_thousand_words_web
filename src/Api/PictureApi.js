@@ -3,7 +3,6 @@ import S3Upload from "./S3Upload";
 import dbServer from './dbServer';
 
 var uuidv4 = require('uuid');
-const API_URL = process.env.REACT_APP_API_URL
 
 async function create(file, name, userId) {
   const pictureId = uuidv4();

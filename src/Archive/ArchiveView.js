@@ -1,6 +1,5 @@
 import React from 'react';
-import { Card, Icon } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Card } from 'semantic-ui-react';
 import ArchiveItem from './ArchiveItem.js';
 import NewStoryCard from './NewStoryCard.js';
 import EmptyArchive from './EmptyArchive.js';

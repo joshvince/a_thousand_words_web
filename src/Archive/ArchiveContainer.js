@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Container, Header, Segment } from 'semantic-ui-react';
 
-import Archive from './Archive/Archive.js';
+import ArchiveView from './ArchiveView.js';
 import StoryApi from '../Api/StoryApi.js';
 
 const styles = {
@@ -13,7 +13,7 @@ const styles = {
   }
 }
 
-class StoryHomePage extends Component {
+class ArchiveContainer extends Component {
   constructor(props){
     super(props)
     this.state = {storyList: []}
@@ -34,11 +34,11 @@ class StoryHomePage extends Component {
           </Header>
         </Segment>
         <Container >
-          <Archive storyList={this.state.storyList} />
+          <ArchiveView storyList={this.state.storyList} />
         </Container>
       </div>
     );
   }
 }
 
-export default StoryHomePage;
+export default ArchiveContainer;
