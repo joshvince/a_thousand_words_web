@@ -3,14 +3,28 @@ import {Button, Form, Header} from 'semantic-ui-react';
 import ImagePreview from '../ImagePreview';
 
 const styles = {
-  uploadButton: { marginBottom: '1.2em' }
+  uploadButton: { 
+    wrapper: {
+      position: 'relative',
+      overflow: 'hidden',
+      display: 'inline-block'
+    },
+    button: {
+      marginBottom: '1.2em' 
+    },
+    input: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      opacity: 0
+    }
+  }
 }
 
 class PictureCreatorForm extends Component {
   constructor(props){
     super(props)
     this.state = {
-      showUploadBox: false,
       imageFile: null,
       imageFileName: null,
       imagePreviewUrl: null,
@@ -25,8 +39,6 @@ class PictureCreatorForm extends Component {
   isReadyToSave = ({pictureName, imageFile}) => {
     return (pictureName.length > 1) && (imageFile !== null)
   }
-
-  toggleUploadBox = (e) => this.setState({showUploadBox: !this.state.showUploadBox})
 
   handleChange = (e, { name, value }) => {
     let readyToSavePayload = {pictureName: value, imageFile: this.state.imageFile}
@@ -69,22 +81,23 @@ class PictureCreatorForm extends Component {
     let imageButtonLabel = this.state.imageFileName ? "change image": "upload new image"
     return (
       <Form size="huge">
-        <ImagePreview imagePreviewUrl={this.state.imagePreviewUrl} />        
-        <Button 
-          basic 
-          style={styles.uploadButton}
-          content={imageButtonLabel}
-          onClick={this.toggleUploadBox} 
-        />
-        {!this.state.showUploadBox ? null :
-          <Form.Field>
+        <ImagePreview imagePreviewUrl={this.state.imagePreviewUrl} />     
+        <div style={styles.uploadButton.wrapper}> 
+          <Button 
+            basic 
+            size="huge"
+            style={styles.uploadButton.button}
+            content={imageButtonLabel}
+            onClick={this.toggleUploadBox} 
+          />
             <input 
+              style={styles.uploadButton.input}
               type="file" 
               accept="image/*" 
               id="userImg"
               onChange={this.handleImageSelect}
             />
-          </Form.Field>}
+          </div>
         <Header 
           as='h2' 
           content='Give it a name'  
