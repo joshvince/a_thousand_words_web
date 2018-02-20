@@ -63,6 +63,12 @@ async function uploadPicture(pictureObject) {
   return await post(url, params)
 }
 
+// Get one picture by its ID
+async function getOnePicture(pictureId){
+  const url = `${API_URL}/pictures/${pictureId}`
+  return await get(url)
+}
+
 // Private Functions
 
 async function post(url, params) {
@@ -92,6 +98,7 @@ async function get(url) {
 
 const dbServer = {
   getSignedRequest: getSignedRequest,
+  getOnePicture: getOnePicture,
   getStoriesByUser: getStoriesByUser,
   getOneStory: getOneStory,
   uploadStory: uploadStory,

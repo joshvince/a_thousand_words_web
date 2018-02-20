@@ -47,19 +47,8 @@ async function createWithinStory(file, userId){
   }
 }
 
-async function getAllPictures() { 
-  const res = await fetch(`${API_URL}/pictures/all`, {
-    accept: 'application/json'
-  })
-  return await res.json()
-}
-
-async function getPicturesFromUser(userId) {
-  const url = `${API_URL}/pictures?user-id=${userId}`;
-  const res = await fetch(url, {
-    accept: 'application/json'
-  })
-  return await res.json()
+async function getOnePicture(pictureId) {
+  return await dbServer.getOnePicture(pictureId)
 }
 
 /* NOTE:
@@ -76,8 +65,7 @@ function buildFileName(filename, uuid) {
 }
 
 const PictureApi = {
-  getPicturesFromUser: getPicturesFromUser,
-  getAllPictures: getAllPictures,
+  getOnePicture: getOnePicture,
   createPicture: create,
   createWithinStory: createWithinStory
 }

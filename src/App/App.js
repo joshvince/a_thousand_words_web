@@ -6,13 +6,14 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import UserStorage from '../User/UserStorage.js';
 
 // Import components and styles
-import Nav from './Nav/Nav.js';
-import SignIn from '../User/SignIn.js';
-import Homepage from '../Homepage/Homepage.js';
-import StoryHomePage from '../Story/StoryHomePage.js';
-import StoryViewer from '../Story/Story/Viewer/StoryViewer.js';
-import StoryCreator from '../Story/Story/Creator/StoryCreator.js';
-import PictureCreator from '../Picture/Creator/PictureCreator.js';
+import Nav from './Nav/Nav';
+import SignIn from '../User/SignIn';
+import Homepage from '../Homepage/Homepage';
+import StoryHomePage from '../Story/StoryHomePage';
+import StoryViewer from '../Story/Story/Viewer/StoryViewer';
+import StoryCreator from '../Story/Story/Creator/StoryCreator';
+import PictureCreator from '../Picture/Creator/PictureCreator';
+import PictureViewerContainer from '../Picture/Viewer/PictureViewerContainer';
 import './App.css';
 
 class App extends Component {
@@ -113,6 +114,10 @@ class App extends Component {
                 return <PictureCreator currentUser={this.state.currentUser} />
               }
             }}
+            />
+            <Route
+              path="/pictures/:pictureId"
+              render={({match}) => <PictureViewerContainer pictureId={match.params.pictureId}/>}
             />
           </Switch>
         </div>
