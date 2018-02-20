@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import {Container, Header, Segment } from 'semantic-ui-react';
+import {Container, Header, Segment, Tab, Dimmer, Loader, Menu } from 'semantic-ui-react';
 
-import ArchiveView from './ArchiveView.js';
-import StoryApi from '../Api/StoryApi.js';
+import StoryArchiveView from './StoryArchive/StoryArchiveView';
+import PictureArchiveView from './PictureArchive/PictureArchiveView';
+import StoryApi from '../Api/StoryApi';
+import PictureApi from '../Api/PictureApi';
 
 const styles = {
   pageContainer: {
@@ -16,26 +18,55 @@ const styles = {
 class ArchiveContainer extends Component {
   constructor(props){
     super(props)
-    this.state = {storyList: []}
+    this.state = {
+      storyList: [],
+      pictureList: [],
+      displayLoader: true
+    }
   }
-  componentWillMount = () => {
-    StoryApi.getStoriesByUser(this.props.currentUser.id).then(resp => {
-      this.setState({ storyList: resp.Items })
+  componentDidMount = async () => {
+    window.scrollTo(0,0)
+    let userId = this.props.currentUser.id;
+    const stories = await StoryApi.getStoriesByUser(userId);
+    const pictures = await PictureApi.getPicturesByUser(userId);
+    this.setState({
+      storyList: stories.Items,
+      pictureList: pictures.Items,
+      displayLoader: false
     })
   }
-  componentDidMount = () => window.scrollTo(0,0);
     
   render() {
+    let storyArchive = <StoryArchiveView key={1} storyList={this.state.storyList} />
+    let pictureArchive = <PictureArchiveView key={2} pictureList={this.state.pictureList} />
+    let tabs = [
+      {
+        menuItem: <Menu.Item key={0}>
+                    <Header as='h1' content='Stories'/>
+                  </Menu.Item>, 
+        render: () => <Tab.Pane content={storyArchive}/>
+      },
+      {
+        menuItem: <Menu.Item key={1}>
+                    <Header as='h1' content='Pictures'/>
+                  </Menu.Item>,
+        render: () => <Tab.Pane content={pictureArchive}/>
+      }
+    ]
     return (
       <div style={styles.pageContainer}>
-        <Segment vertical basic>
-          <Header as='h1' style={styles.pageHeader}>
-            {`${this.props.currentUser.name}'s Archive`}
-          </Header>
-        </Segment>
-        <Container >
-          <ArchiveView storyList={this.state.storyList} />
-        </Container>
+        <Dimmer page active={this.state.displayLoader}>
+          <Loader size="huge"/>
+        </Dimmer>
+        {this.state.displayLoader ? null :
+          [<Segment vertical basic key={0}>
+            <Header as='h1' style={styles.pageHeader}>
+              {`${this.props.currentUser.name}'s Archive`}
+            </Header>
+          </Segment>,
+          <Container key={1}>
+            <Tab panes={tabs}/>
+          </Container>]}
       </div>
     );
   }

@@ -50,6 +50,10 @@ async function getOnePicture(pictureId) {
   return await dbServer.getOnePicture(pictureId)
 }
 
+async function getPicturesByUser(userId) {
+  return await dbServer.getPicturesByUser(userId)
+} 
+
 /* NOTE:
 This article saved my bacon here: 
 https://devcenter.heroku.com/articles/s3-upload-node#setting-up-the-app-side-node-code
@@ -65,6 +69,7 @@ function buildFileName(filename, uuid) {
 
 const PictureApi = {
   getOnePicture: getOnePicture,
+  getPicturesByUser: getPicturesByUser,
   createPicture: create,
   createWithinStory: createWithinStory
 }
