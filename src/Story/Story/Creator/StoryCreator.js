@@ -5,7 +5,7 @@ import EmptySteps from './Empty/EmptySteps.js';
 import HeaderViewHandler from './Form/Header/ViewHandler.js';
 import StoryStepViewHandler from './Form/StoryStep/ViewHandler.js';
 import AddNewStep from './Form/StoryStep/AddNewStep.js';
-import Uploader from './Uploader/Uploader.js';
+import Uploader from '../../../App/Uploader/Uploader';
 
 import StoryApi from '../../../Api/StoryApi.js';
 
@@ -145,7 +145,8 @@ class StoryCreator extends Component {
         <Uploader 
           isInProgress={this.state.uploadInProgress} 
           result={this.state.uploadSuccess}
-          storyId={this.state.storyId}
+          redirectRoot="/stories"
+          objectId={this.state.storyId}
         /> : null}
         <Segment basic inverted vertical>
           <Header as="h1" content="Create a new story" style={styles.header.header}/>

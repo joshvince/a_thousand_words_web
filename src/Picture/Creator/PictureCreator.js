@@ -1,63 +1,63 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
-import PictureCreatorForm from './PictureCreatorForm.js';
-import ErrorMessage from '../../App/Error/ErrorMessage.js';
-import './PictureCreator.css';
+import {Container, Header} from 'semantic-ui-react';
+import Uploader from '../../App/Uploader/Uploader';
+import PictureForm from './Form';
 
-import PictureApi from '../../Api/PictureApi.js';
+import PictureApi from '../../Api/PictureApi';
+
+const styles = {
+  pageContainer: {marginTop: '8em'},
+  header: {fontSize: '4em'}
+}
 
 class PictureCreator extends Component {
   constructor(props){
     super(props)
     this.state = {
-      displayError: false,
-      fireRedirect: false,
-      addedPicture: {}
+      showUploader: false,
+      uploadInProgress: false,
+      uploadSuccess: null,
+      pictureId: null
     }
-    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
-  async handleFormSubmit(formParams){
-    let fileInput = document.getElementById("userImg");
-    let file = fileInput.files[0];
-    if (file == null) {
-      alert(`No File Selected`)
-    }
-    else {
-      let uploadedImg = await PictureApi.uploadImage(file);
-      let fullParams = {
-        ...formParams,
-        image: uploadedImg.url,
-        uuid: uploadedImg.uuid,
-        userId: this.props.currentUser.id
-      };
-      let res = await PictureApi.postNewPicture(fullParams)
-      if (res.status === 201) {
+
+  createPicture = (payload) => {
+    let userId = this.props.currentUser.id;
+    this.setState({
+      showUploader: true,
+      uploadInProgress: true
+    })
+    PictureApi.createPicture(payload.file, payload.name, userId).then(resp => {
+      if (resp.success) {
         this.setState({
-          fireRedirect: true,
-          addedPicture: res.json
+          uploadInProgress: false,
+          uploadSuccess: true, 
+          pictureId: resp.object.uuid
         })
       }
       else {
-        this.setState({displayError: true})
+        this.setState({
+          uploadInProgress: false,
+          uploadSuccess: false
+        })
       }
-    }
+    })
+    
   }
+
   render() {
     return (
-      <div className="column" id="picture-creator">
-        {this.state.displayError && (
-          <ErrorMessage 
-            message="There was a problem with saving your picture. Refresh and try again"
-          />
-        )}
-        <PictureCreatorForm submissionHandler={this.handleFormSubmit} /> 
-        {this.state.fireRedirect && (
-          <Redirect to={{
-            pathname: '/pictures', 
-            state: {activePic: this.state.addedPicture}
-          }} />
-        )}
-      </div>
+      <Container style={styles.pageContainer}>
+        {this.state.showUploader ? 
+          <Uploader 
+            isInProgress={this.state.uploadInProgress} 
+            result={this.state.uploadSuccess}
+            redirectRoot="/pictures"
+            objectId={this.state.pictureId}
+          /> : null}
+        <Header style={styles.header} as="h1" content="Create a new picture"/>
+        <PictureForm submitHandler={this.createPicture}/>
+      </Container>
     );
   }
 }

@@ -46,7 +46,7 @@ function createStorySteps(rawStepArray, userId) {
 function createOneStoryStep(rawStepData, userId) {
   return new Promise((resolve, reject) => {
     // Create the Picture with PictureApi
-    PictureApi.create(rawStepData.data.imageFile, userId).then(picture => {
+    PictureApi.createWithinStory(rawStepData.data.imageFile, userId).then(picture => {
       let payload = {
         headline: rawStepData.data.headline,
         description: rawStepData.data.description,

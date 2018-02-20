@@ -44,6 +44,31 @@ async function uploadStory(storyObject) {
   return await post(url, params)
 }
 
+/*
+uploadPicture
+Takes in a picture object, Sends the object to the DB for insertion into the database
+Returns {success: true, object: object} if it was successful,
+{success: false, reason: reason} otherwise
+*/
+async function uploadPicture(pictureObject) {
+  const url = `${API_URL}/pictures/new`
+  const params = {
+    method: "POST",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(pictureObject)
+  }
+  return await post(url, params)
+}
+
+// Get one picture by its ID
+async function getOnePicture(pictureId){
+  const url = `${API_URL}/pictures/${pictureId}`
+  return await get(url)
+}
+
 // Private Functions
 
 async function post(url, params) {
@@ -73,9 +98,11 @@ async function get(url) {
 
 const dbServer = {
   getSignedRequest: getSignedRequest,
+  getOnePicture: getOnePicture,
   getStoriesByUser: getStoriesByUser,
   getOneStory: getOneStory,
-  uploadStory: uploadStory
+  uploadStory: uploadStory,
+  uploadPicture: uploadPicture
 }
 
 export default dbServer;

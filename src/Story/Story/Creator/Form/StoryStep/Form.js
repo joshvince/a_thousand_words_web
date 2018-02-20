@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {  Container, Form, Segment,
           Button, Divider, Header } from 'semantic-ui-react';
-import ImagePreview from './ImagePreview.js';
+import ImagePreview from '../../../../../Picture/ImagePreview';
 import DeleteStep from './DeleteStep.js';
 
 const styles = {

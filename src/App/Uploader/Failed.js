@@ -2,7 +2,7 @@ import React from 'react';
 import {Icon, Header, Button, Segment} from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
-const UploadFailed = () => {
+const UploadFailed = ({redirectUrl}) => {
   return (
     <div>
       <Segment vertical>
@@ -11,14 +11,14 @@ const UploadFailed = () => {
         <Header 
           as="h3" 
           inverted 
-          content="Your story could not be saved. You'll have to start again" 
+          content="We couldn't save that right now." 
         />
         <Button 
           size="huge" 
           negative 
           content="Go back" 
           as={Link} 
-          to={`/stories`} />
+          to={redirectUrl} />
       </Segment>
     </div>
   );

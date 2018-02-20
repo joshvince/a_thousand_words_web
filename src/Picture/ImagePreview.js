@@ -7,7 +7,7 @@ const styles = {
     justifyContent: 'center'
   },
   image: {
-    maxHeight: '20vh',
+    maxHeight: '40vh',
     maxWidth: 'auto'
   }
 }

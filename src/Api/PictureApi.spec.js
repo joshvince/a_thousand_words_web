@@ -10,11 +10,11 @@ const TESTFILE = {
 }
 
 
-describe('#create', function () {
+describe('#createWithinStory', function () {
 
   it('should create an object with valid attributes according to the schema', async () => {
     expect.assertions(1)
-    let result = await PictureApi.create(TESTFILE, "user123")
+    let result = await PictureApi.createWithinStory(TESTFILE, "user123")
     let keys = Object.keys(result).sort();
     expect(keys).toMatchObject(PICTURESCHEMA);
   });
