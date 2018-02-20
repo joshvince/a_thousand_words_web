@@ -3,7 +3,6 @@ import S3Upload from "./S3Upload";
 import dbServer from './dbServer';
 
 var uuidv4 = require('uuid');
-const API_URL = process.env.REACT_APP_API_URL
 
 async function create(file, name, userId) {
   const pictureId = uuidv4();
@@ -51,6 +50,10 @@ async function getOnePicture(pictureId) {
   return await dbServer.getOnePicture(pictureId)
 }
 
+async function getPicturesByUser(userId) {
+  return await dbServer.getPicturesByUser(userId)
+} 
+
 /* NOTE:
 This article saved my bacon here: 
 https://devcenter.heroku.com/articles/s3-upload-node#setting-up-the-app-side-node-code
@@ -66,6 +69,7 @@ function buildFileName(filename, uuid) {
 
 const PictureApi = {
   getOnePicture: getOnePicture,
+  getPicturesByUser: getPicturesByUser,
   createPicture: create,
   createWithinStory: createWithinStory
 }

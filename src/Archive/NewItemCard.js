@@ -10,23 +10,21 @@ const styles = {
   }
 }
 
-const NewStoryCard = () => {
+const NewItemCard = ({url, iconName, text}) => {
   return (
-    <Card as={Link} to="/stories/new" >
+    <Card as={Link} to={url} >
       <Card.Content>
         <Card.Header>
           <div style={styles.iconWrapper}> 
-            <Icon name="write" size="huge" color="blue"/>
+            <Icon name={iconName} size="huge" color="blue"/>
           </div>
         </Card.Header>
       </Card.Content>
       <Card.Content>
-        <Card.Description>
-          Create a new story
-        </Card.Description>
+        <Card.Description content={text}/>
       </Card.Content>
     </Card>
   );
 };
 
-export default NewStoryCard;
+export default NewItemCard;

@@ -9,7 +9,7 @@ import UserStorage from '../User/UserStorage.js';
 import Nav from './Nav/Nav';
 import SignIn from '../User/SignIn';
 import Homepage from '../Homepage/Homepage';
-import StoryHomePage from '../Story/StoryHomePage';
+import ArchiveContainer from '../Archive/ArchiveContainer';
 import StoryViewer from '../Story/Story/Viewer/StoryViewer';
 import StoryCreator from '../Story/Story/Creator/StoryCreator';
 import PictureCreator from '../Picture/Creator/PictureCreator';
@@ -82,13 +82,13 @@ class App extends Component {
           />
           <Switch>
             <Route 
-              exact path="/stories"
+              exact path="/archive"
               render={() => {
                 if (!this.state.signedIn) {
                   return <SignIn signInHandler={this.signInHandler} />
                 }
                 else {
-                  return <StoryHomePage currentUser={this.state.currentUser}/>;
+                  return <ArchiveContainer currentUser={this.state.currentUser}/>;
                 }
               }}
             />

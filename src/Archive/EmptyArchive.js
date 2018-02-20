@@ -12,7 +12,7 @@ const styles = {
   }
 }
 
-const EmptyArchive = () => {
+const EmptyArchive = ({header, subheader, url, iconName}) => {
   return (
     <Container>
       <Header 
@@ -20,12 +20,12 @@ const EmptyArchive = () => {
         color="blue" 
         icon
         as={Link}
-        to="/stories/new"
+        to={url}
       >
-        <Icon name="write" size="huge" color="blue"/>
-        You don't have any stories yet
+        <Icon name={iconName} size="huge" color="blue"/>
+        {header}
       <Header.Subheader style={styles.text}>
-        Click to get started
+        {subheader}
       </Header.Subheader>
       </Header>
     </Container>

@@ -51,7 +51,7 @@ const PageHeader = ({title, subtitle}) => {
           size="huge" 
           content="Get Started" 
           as={Link} 
-          to="/stories" 
+          to="/archive" 
           style={styles.cta}
         />
       </Container>
