@@ -48,7 +48,7 @@ const Nav = ({signedIn, currentUser, signOutHandler}) => {
           <Dropdown item text={currentUser.name} icon="user">
             <Dropdown.Menu>
               <Responsive as={Dropdown.Item} maxWidth={768}>
-                <Link to="/stories" style={styles.menuItem}>My Archive</Link>
+                <Link to="/archive" style={styles.menuItem}>My Archive</Link>
               </Responsive>
               <Responsive as={Dropdown.Item} maxWidth={768}>
                 <Link to="/stories/new" style={styles.menuItem}>New Story</Link>

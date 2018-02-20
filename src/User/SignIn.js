@@ -45,7 +45,7 @@ class SignIn extends Component {
               />
             )
           })}
-          {this.state.fireRedirect && <Redirect to='/stories' />}
+          {this.state.fireRedirect && <Redirect to='/archive' />}
         </Container>
       </div>
     );
