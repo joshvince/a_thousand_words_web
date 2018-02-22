@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import {Button, Form, Header} from 'semantic-ui-react';
+import {Container, Button, Form, Header, Input} from 'semantic-ui-react';
 import ImagePreview from '../ImagePreview';
 
 const styles = {
+  formContainer: {
+    marginTop: '1em'
+  },
   uploadButton: { 
     wrapper: {
       position: 'relative',
@@ -18,6 +21,12 @@ const styles = {
       left: 0,
       opacity: 0
     }
+  },
+  subheader: {
+    fontSize: '2em'
+  },
+  submitButton: {
+    marginTop: '1em'
   }
 }
 
@@ -38,6 +47,10 @@ class PictureCreatorForm extends Component {
 
   isReadyToSave = ({pictureName, imageFile}) => {
     return (pictureName.length > 1) && (imageFile !== null)
+  }
+
+  handleRef = (c) => {
+    this.inputRef = c
   }
 
   handleChange = (e, { name, value }) => {
@@ -61,8 +74,9 @@ class PictureCreatorForm extends Component {
           showUploadBox: false,
           imageFile: file,
           imageFileName: file.name,
-          imagePreviewUrl: reader.result,
+          imagePreviewUrl: reader.result
         })
+        this.inputRef.focus()
       }
       reader.readAsDataURL(file)
     }
@@ -80,42 +94,49 @@ class PictureCreatorForm extends Component {
   render() {
     let imageButtonLabel = this.state.imageFileName ? "change image": "upload new image"
     return (
-      <Form size="huge">
-        <ImagePreview imagePreviewUrl={this.state.imagePreviewUrl} />     
-        <div style={styles.uploadButton.wrapper}> 
-          <Button 
-            basic 
-            size="huge"
-            style={styles.uploadButton.button}
-            content={imageButtonLabel}
-            onClick={this.toggleUploadBox} 
-          />
-            <input 
-              style={styles.uploadButton.input}
-              type="file" 
-              accept="image/*" 
-              id="userImg"
-              onChange={this.handleImageSelect}
+      <Container text style={styles.formContainer}>
+        <Form size="huge">
+          <Header style={styles.subheader} as='h2' content='Select an image' />
+          <ImagePreview imagePreviewUrl={this.state.imagePreviewUrl} />     
+          <div style={styles.uploadButton.wrapper}> 
+            <Button 
+              basic 
+              size="huge"
+              style={styles.uploadButton.button}
+              content={imageButtonLabel}
+              onClick={this.toggleUploadBox} 
             />
-          </div>
-        <Header 
-          as='h2' 
-          content='Give it a name'  
-        />
-        <Form.Input
-          placeholder="Enter a name for your picture"
-          name="pictureName"
-          value={this.state.pictureName}
-          onChange={this.handleChange}
-        />
-        <Form.Button
+              <input 
+                style={styles.uploadButton.input}
+                type="file" 
+                accept="image/*" 
+                id="userImg"
+                onChange={this.handleImageSelect}
+              />
+            </div>
+          <Header 
+            as='h2' 
+            style={styles.subheader}
+            content='Give it a name'  
+          />
+          <Input
+            fluid
+            placeholder="My first home"
+            name="pictureName"
+            value={this.state.pictureName}
+            onChange={this.handleChange}
+            ref={this.handleRef}
+          />
+          <Form.Button
+            style={styles.submitButton}
             color="green" 
             content="Save"
             size="massive"
             disabled={!this.state.readyToSave}
             onClick={this.handleSubmit} 
           />
-      </Form>
+        </Form>
+      </Container>
     );
   }
 }

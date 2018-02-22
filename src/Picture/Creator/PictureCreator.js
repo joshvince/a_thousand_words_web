@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
-import {Container, Header} from 'semantic-ui-react';
+import {Container, Header, Segment} from 'semantic-ui-react';
 import Uploader from '../../App/Uploader/Uploader';
 import PictureForm from './Form';
 
 import PictureApi from '../../Api/PictureApi';
 
 const styles = {
-  pageContainer: {marginTop: '8em'},
-  header: {fontSize: '4em'}
+  pageContainer: {marginTop: '6em'},
+  header: {
+    header: {
+      fontSize: '4em'
+    },
+    text: {
+      fontSize: '1.6em',
+      margin: '1.5em 0'
+    }
+  }
 }
 
 class PictureCreator extends Component {
@@ -47,7 +55,7 @@ class PictureCreator extends Component {
 
   render() {
     return (
-      <Container style={styles.pageContainer}>
+      <Container style={styles.pageContainer} fluid>
         {this.state.showUploader ? 
           <Uploader 
             isInProgress={this.state.uploadInProgress} 
@@ -55,7 +63,14 @@ class PictureCreator extends Component {
             redirectRoot="/pictures"
             objectId={this.state.pictureId}
           /> : null}
-        <Header style={styles.header} as="h1" content="Create a new picture"/>
+        <Segment basic inverted vertical>
+          <Header as="h1" content="Upload a new picture" style={styles.header.header}/>
+          <Container text>
+            <p style={styles.header.text}>
+              Upload a picture to your archive so you can use it in stories.
+            </p>
+          </Container>
+        </Segment>
         <PictureForm submitHandler={this.createPicture}/>
       </Container>
     );
