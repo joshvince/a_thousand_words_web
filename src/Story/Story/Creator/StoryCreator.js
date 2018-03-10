@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import { Segment, Header, Divider, Button, Container} from 'semantic-ui-react';
+import { Container, Segment, Button, Header } from 'semantic-ui-react';
 
-import EmptySteps from './Empty/EmptySteps.js';
-import HeaderViewHandler from './Form/Header/ViewHandler.js';
-import StoryStepViewHandler from './Form/StoryStep/ViewHandler.js';
-import AddNewStep from './Form/StoryStep/AddNewStep.js';
+import TextStepContainer from './Form/TextStep/Container';
+import HeaderViewHandler from './Form/Header/ViewHandler';
 import Uploader from '../../../App/Uploader/Uploader';
 
-import StoryApi from '../../../Api/StoryApi.js';
+import StoryApi from '../../../Api/StoryApi';
 
 const styles = {
   pageContainer: {marginTop: '6em'},
@@ -19,15 +17,6 @@ const styles = {
       fontSize: '1.6em',
       margin: '1.5em 0'
     }
-  },
-  subheader: {
-    fontSize: '3em'
-  },
-  headerInput: {
-    margin: '1em'
-  },
-  actionButtons: {
-    marginBottom: '1em'
   }
 }
 
@@ -35,32 +24,61 @@ class StoryCreator extends Component {
   constructor(props){
     super(props);
     this.state = {
-      nextStepKey: 1,
-      steps: [this.initialiseStep()],
+      nextStepKey: 0,
+      steps: [],
       editing: true,
       showUploader: false,
       uploadInProgress: false,
       uploadSuccess: null,
       storyId: null
     }
-    this.deleteStep = this.deleteStep.bind(this)
   }
-
   componentDidMount = () => window.scrollTo(0,0);
 
-  initialiseStep = (key = 0) => {
-    return {
-      stepKey: key,
-      editing: true,
-      data: {
-        headline: "",
-        description: "",
-        imageFile: null,
-        imageFileName: null,
-        imagePreviewUrl: null
+  initialiseNewStep = (stepType, key) => {
+    const createPictureStep = (key) => {
+      return {
+        editing: true, 
+        data: { type: 'picture', name: "", url: "", pictureId: "", stepKey: key }
       }
     }
+    const createTextStep = (key) => {
+      return {
+        editing: true,
+        data: { type: 'text', headline: "", description: "", stepKey: key }
+      }
+    }
+    return (stepType === 'text') ? createTextStep(key) : createPictureStep(key);
   }
+
+  deleteStep = (stepKey) => {
+    const stepArray = Array.from(this.state.steps)
+    const index = stepArray.findIndex(el => el.data.stepKey === stepKey)
+    if (index !== -1) {
+      // delete it
+      stepArray.splice(index, 1);
+      let editing = stepArray.some( step => step.editing )
+      this.setState({ steps: stepArray, editing: editing })
+    }
+    else {
+      return null
+    }
+  }
+
+  addNewStep = (stepType) => {
+    const stepKey = this.state.nextStepKey;
+    const newStep = this.initialiseNewStep(stepType, stepKey);
+
+    const nextStepKey = (this.state.nextStepKey + 1);
+    let newSteps = Array.from(this.state.steps);
+    newSteps.push(newStep)
+
+    this.setState({
+      nextStepKey: nextStepKey,
+      steps: newSteps
+    })
+  }
+
   updateFormData = (payload) => {
     if (payload.section === "step") {
       this.updateStepData(payload)
@@ -72,7 +90,7 @@ class StoryCreator extends Component {
 
   updateStepData = (newStepData) => {
     let stepArray = Array.from(this.state.steps);
-    const index = stepArray.findIndex(el => el.stepKey === newStepData.stepKey)
+    const index = stepArray.findIndex(el => el.data.stepKey === newStepData.data.stepKey)
     if (index !== -1) {
       // you found a dupe, replace it
       stepArray.splice(index, 1, newStepData);
@@ -84,31 +102,7 @@ class StoryCreator extends Component {
     let editing = stepArray.some( step => step.editing )
     this.setState({ steps: stepArray, editing: editing })
   }
-  
-  addNewStep = () => {
-    const newStep = this.initialiseStep(this.state.nextStepKey)
-    const newSteps = Array.from(this.state.steps)
-    newSteps.push(newStep)
-    const nextStepKey = (this.state.nextStepKey + 1)
-    this.setState({
-      nextStepKey: nextStepKey,
-      steps: newSteps
-    })
-  }
 
-  deleteStep = (stepKey) => {
-    const stepArray = Array.from(this.state.steps)
-    const index = stepArray.findIndex(el => el.stepKey === stepKey)
-    if (index !== -1) {
-      // delete it
-      stepArray.splice(index, 1);
-      let editing = stepArray.some( step => step.editing )
-      this.setState({ steps: stepArray, editing: editing })
-    }
-    else {
-      return null
-    }
-  }
 
   saveStory = (e) => {
     e.preventDefault();
@@ -142,12 +136,12 @@ class StoryCreator extends Component {
     return (
       <div style={styles.pageContainer}>
         {this.state.showUploader ? 
-        <Uploader 
-          isInProgress={this.state.uploadInProgress} 
-          result={this.state.uploadSuccess}
-          redirectRoot="/stories"
-          objectId={this.state.storyId}
-        /> : null}
+          <Uploader 
+            isInProgress={this.state.uploadInProgress} 
+            result={this.state.uploadSuccess}
+            redirectRoot="/stories"
+            objectId={this.state.storyId}
+          /> : null}
         <Segment basic inverted vertical>
           <Header as="h1" content="Create a new story" style={styles.header.header}/>
           <Container text>
@@ -161,38 +155,30 @@ class StoryCreator extends Component {
         <Segment basic vertical>
           <HeaderViewHandler submitHandler={this.updateFormData}/>
         </Segment>
-        <Divider/>
-        <Segment vertical>
-          {this.state.steps.length ? 
-            this.state.steps.map((step, i) => {
-              return(
-                <StoryStepViewHandler 
-                  stepKey={step.stepKey} 
-                  editing={step.editing}
-                  data={step.data}
-                  submitHandler={this.updateFormData} 
-                  deleteHandler={this.deleteStep}
-                  key={step.stepKey}
-                />
-              )
-            }) : <EmptySteps />
+        {this.state.steps.map((step, i) => {
+          if (step.data.type === 'text') {
+            return (
+              <TextStepContainer 
+                key={i}
+                data={step.data} 
+                editing={true}
+                deleteHandler={this.deleteStep}
+                submitHandler={this.updateFormData}
+              />
+            )
           }
-          <AddNewStep 
-            clickHandler={this.addNewStep} 
-            disabled={this.state.editing}
-          />
-        </Segment>
-        <Header as="h2" content="Finished?" style={styles.subheader}/>
-        <Button
-          size="massive"
-          positive
-          content="Done"
-          width={12}
-          onClick={this.saveStory}
-          style={styles.actionButtons}
-          disabled={this.state.editing}
-        />
+          else if (step.type === 'picture') {
+            return `Picture Step \n`
+          }
+          else {
+            return `Step`
+          }
+        })}
+        <Button basic onClick={e => this.addNewStep('text')} content="Add new text step"/>
+        <Button basic onClick={e => this.addNewStep('picture')} content="Add new picture step" />
+        <Button basic onClick={e => this.saveStory(e)} content="Save" />
       </div>
+      
     );
   }
 }

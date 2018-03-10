@@ -23,8 +23,7 @@ class TextStepContainer extends Component {
     const payload = {
       editing: editValue,
       section: "step",
-      type: "text",
-      data: data, 
+      data: {...data, type: "text"}
     }
     this.props.submitHandler(payload)
   }

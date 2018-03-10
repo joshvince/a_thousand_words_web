@@ -59,21 +59,21 @@ class App extends Component {
         <div>
           <Route path="/" render={() => {
             return (
-              <Nav 
-                currentUser={this.state.currentUser} 
+              <Nav
+                currentUser={this.state.currentUser}
                 signedIn={this.state.signedIn}
                 signOutHandler={this.signOutHandler}
               />
             )
-          }} 
+          }}
           />
           <Route exact path="/" component={Homepage} />
           <Route
             exact path="/signin"
             render={() => {
               return (
-                <SignIn 
-                  signedIn={this.state.signedIn} 
+                <SignIn
+                  signedIn={this.state.signedIn}
                   currentUser={this.state.currentUser}
                   signInHandler={this.signInHandler}
                 />
@@ -81,7 +81,7 @@ class App extends Component {
             }}
           />
           <Switch>
-            <Route 
+            <Route
               exact path="/archive"
               render={() => {
                 if (!this.state.signedIn) {
@@ -92,7 +92,7 @@ class App extends Component {
                 }
               }}
             />
-            <Route exact path="/stories/new" 
+            <Route exact path="/stories/new"
               render={() => {
                 if (!this.state.signedIn) {
                   return <SignIn signInHandler={this.signInHandler} />
@@ -102,8 +102,8 @@ class App extends Component {
                 }
               }}
             />
-            <Route 
-              path="/stories/:storyId" 
+            <Route
+              path="/stories/:storyId"
               render={({match}) => <StoryViewer storyId={match.params.storyId} />}
             />
             <Route exact path="/pictures/new" render={() => {
