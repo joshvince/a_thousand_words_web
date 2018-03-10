@@ -4,7 +4,6 @@ import {Dimmer, Loader} from 'semantic-ui-react';
 import StoryApi from '../../../Api/StoryApi.js';
 
 import StoryHeader from './Header.js';
-import StoryStep from './StoryStep.js';
 import StoryFooter from './Footer.js';
 import PictureView from '../../../Picture/Viewer/View';
 import StoryTextView from './StoryTextView';
@@ -33,24 +32,17 @@ class StoryViewer extends Component {
         </Dimmer>
         {this.state.displayLoader ? null :
           [
-            <StoryHeader 
-              title={this.state.storyData.title} 
-              subtitle={this.state.storyData.subtitle} 
+            <StoryHeader
+              title={this.state.storyData.title}
+              subtitle={this.state.storyData.subtitle}
               button={null}
-              key={this.props.storyId} 
+              key={this.props.storyId}
             />,
             this.state.storyData.steps.map((step,i) => {
-              switch (step.type) {
-                case 'picture':
-                  return <PictureView picture={step} key={i}/>
-                  break;
-                case 'text':
-                  break;
-                  return <StoryTextView storyText={step} key={i} />
-                default:
-                  return <StoryStep step={step} key={i}/>
-                  break;
-              }             
+              return (step.type === 'picture') ?
+                <PictureView picture={step} key={i}/>
+                :
+                <StoryTextView storyText={step} key={i} />
             }),
             <StoryFooter key={999}/>
           ]
