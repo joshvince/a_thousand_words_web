@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { Container, Segment, Button, Header } from 'semantic-ui-react';
 
 import TextStepContainer from './Form/TextStep/Container';
+import PictureStepContainer from './Form/PictureStep/Container';
 import HeaderViewHandler from './Form/Header/ViewHandler';
 import Uploader from '../../../App/Uploader/Uploader';
 
 import StoryApi from '../../../Api/StoryApi';
 
 const styles = {
-  pageContainer: {marginTop: '6em'},
+  pageContainer: {},
   header: {
     header: {
       fontSize: '4em'
@@ -38,7 +39,7 @@ class StoryCreator extends Component {
   initialiseNewStep = (stepType, key) => {
     const createPictureStep = (key) => {
       return {
-        editing: true, 
+        editing: true,
         data: { type: 'picture', name: "", url: "", pictureId: "", stepKey: key }
       }
     }
@@ -112,7 +113,7 @@ class StoryCreator extends Component {
       if (resp.success) {
         this.setState({
           uploadInProgress: false,
-          uploadSuccess: true, 
+          uploadSuccess: true,
           storyId: resp.object.uuid
         })
       }
@@ -135,9 +136,9 @@ class StoryCreator extends Component {
   render() {
     return (
       <div style={styles.pageContainer}>
-        {this.state.showUploader ? 
-          <Uploader 
-            isInProgress={this.state.uploadInProgress} 
+        {this.state.showUploader ?
+          <Uploader
+            isInProgress={this.state.uploadInProgress}
             result={this.state.uploadSuccess}
             redirectRoot="/stories"
             objectId={this.state.storyId}
@@ -156,29 +157,30 @@ class StoryCreator extends Component {
           <HeaderViewHandler submitHandler={this.updateFormData}/>
         </Segment>
         {this.state.steps.map((step, i) => {
-          if (step.data.type === 'text') {
-            return (
-              <TextStepContainer 
-                key={i}
-                data={step.data} 
-                editing={true}
-                deleteHandler={this.deleteStep}
-                submitHandler={this.updateFormData}
-              />
-            )
-          }
-          else if (step.type === 'picture') {
-            return `Picture Step \n`
-          }
-          else {
-            return `Step`
-          }
+          return (step.data.type === 'text') ?
+            <TextStepContainer
+              key={i}
+              data={step.data}
+              editing={true}
+              deleteHandler={this.deleteStep}
+              submitHandler={this.updateFormData}
+            />
+            :
+            <PictureStepContainer
+              key={i}
+              data={step.data}
+              editing={true}
+              currentUser={this.props.currentUser}
+              deleteHandler={this.deleteStep}
+              submitHandler={this.updateFormData}
+            />
+
         })}
         <Button basic onClick={e => this.addNewStep('text')} content="Add new text step"/>
         <Button basic onClick={e => this.addNewStep('picture')} content="Add new picture step" />
         <Button basic onClick={e => this.saveStory(e)} content="Save" />
       </div>
-      
+
     );
   }
 }

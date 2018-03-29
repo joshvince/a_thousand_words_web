@@ -9,7 +9,7 @@ const styles = {
 
 const PictureView = ({picture}) => {
   return (
-    <Container fluid style={styles.pageContainer}>  
+    <Container fluid style={styles.pageContainer}>
       <Image src={picture.url} centered/>
       <Header as='h2' content={picture.name}/>
     </Container>

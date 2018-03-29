@@ -4,7 +4,7 @@ import {Container, Button, Header} from 'semantic-ui-react';
 import { Redirect } from 'react-router-dom';
 
 const styles = {
-  pageContainer: {marginTop: '5em', padding: '4em 0em'},
+  pageContainer: { padding: '4em 0em'},
   pageTitle: {fontSize: '4em', marginBottom: '1em'},
   actionButtons: {marginBottom: '1em'}
 }
@@ -35,10 +35,10 @@ class SignIn extends Component {
           <Header as='h1' content='Please Sign In' style={styles.pageTitle}/>
           {this.state.userList.map((usr, i) => {
             return (
-              <Button 
-                secondary 
-                content={usr.name} 
-                key={i} 
+              <Button
+                secondary
+                content={usr.name}
+                key={i}
                 onClick={e => this.signIn(usr)}
                 size="massive"
                 style={styles.actionButtons}

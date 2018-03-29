@@ -8,10 +8,6 @@ import StoryFooter from './Footer.js';
 import PictureView from '../../../Picture/Viewer/View';
 import StoryTextView from './StoryTextView';
 
-const styles = {
-  pageContainer: {marginTop: '5em'}
-}
-
 class StoryViewer extends Component {
   constructor(props){
     super(props)
@@ -26,11 +22,13 @@ class StoryViewer extends Component {
   }
   render() {
     return (
-      <div style={styles.pageContainer}>
+      <div>
         <Dimmer page active={this.state.displayLoader}>
           <Loader size="huge"/>
         </Dimmer>
-        {this.state.displayLoader ? null :
+        {this.state.displayLoader ?
+          null
+          :
           [
             <StoryHeader
               title={this.state.storyData.title}

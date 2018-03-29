@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
-import { Button, Segment } from 'semantic-ui-react';
-import StoryTextView from '../../../Viewer/StoryTextView';
-import StoryTextForm from './Form';
+import PictureSelector from './PictureSelector';
+import PictureView from '../../../../../Picture/Viewer/PictureViewerContainer';
 
-const styles = {
-  container: {
-    margin: '1em'
-  }
-}
-
-class TextStepContainer extends Component {
+class PictureStepContainer extends Component {
   constructor(props){
     super(props)
     this.state = {
@@ -23,7 +16,7 @@ class TextStepContainer extends Component {
     const payload = {
       editing: editValue,
       section: "step",
-      data: {...data, type: "text"}
+      data: {...data, type: "picture"}
     }
     this.props.submitHandler(payload)
   }
@@ -47,25 +40,34 @@ class TextStepContainer extends Component {
   }
 
   render() {
-    let key = this.props.data.stepKey;
+    const key = this.props.data.stepKey
     return (
-      <div style={styles.container} ref={el => { this[`el${key}`] = el; }}>
-        <Segment>
+      <div>
         {this.state.editing ?
-          <StoryTextForm
-            submitHandler={this.updateData}
-            deleteHandler={this.handleDelete}
-            data={this.state.data}
-          /> :
-          [
-            <StoryTextView storyText={this.state.data} key={0}/>,
-            <Button content="Edit" onClick={this.toggleEdit} key={1}/>
-          ]
+          <PictureSelector
+            stepKey={key}
+            currentUser={this.props.currentUser}
+            onSelect={this.updateData}
+          />
+        :
+          <PictureView pictureId={this.state.data.pictureId} />
+
         }
-        </Segment>
       </div>
     );
   }
 }
 
-export default TextStepContainer;
+export default PictureStepContainer;
+
+/*
+TODO:
+- this should behave in a very similar way to the textstepcontainer.
+I tried to extract out the helper functons to a separeate module but couldn't get
+it to work.
+
+- you should be able to select a picture from some sort of list (modal vs in line?)
+
+- selecting the picture should flip you to the picture view
+
+*/

@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 // Import the API clients and other helper modules
 import UserStorage from '../User/UserStorage.js';
+// This one clears the nav for each main page
+import ClearNavContainer from './ClearNavContainer';
 
 // Import components and styles
 import Nav from './Nav/Nav';
@@ -68,56 +70,63 @@ class App extends Component {
           }}
           />
           <Route exact path="/" component={Homepage} />
-          <Route
-            exact path="/signin"
+          <Route exact path="/signin"
             render={() => {
               return (
-                <SignIn
-                  signedIn={this.state.signedIn}
-                  currentUser={this.state.currentUser}
-                  signInHandler={this.signInHandler}
+                <ClearNavContainer
+                  children={
+                    <SignIn
+                      signedIn={this.state.signedIn}
+                      currentUser={this.state.currentUser}
+                      signInHandler={this.signInHandler}
+                    />
+                  }
                 />
               )
             }}
           />
           <Switch>
-            <Route
-              exact path="/archive"
+            <Route exact path="/archive"
               render={() => {
-                if (!this.state.signedIn) {
-                  return <SignIn signInHandler={this.signInHandler} />
-                }
-                else {
-                  return <ArchiveContainer currentUser={this.state.currentUser}/>;
-                }
+                let renderedComponent ;
+                (!this.state.signedIn) ?
+                  renderedComponent = <SignIn signInHandler={this.signInHandler} />
+                :
+                  renderedComponent = <ArchiveContainer currentUser={this.state.currentUser}/>
+                return <ClearNavContainer children={renderedComponent} />
               }}
             />
             <Route exact path="/stories/new"
               render={() => {
-                if (!this.state.signedIn) {
-                  return <SignIn signInHandler={this.signInHandler} />
-                }
-                else {
-                  return <StoryCreator currentUser={this.state.currentUser}/>;
-                }
+                let renderedComponent ;
+                (!this.state.signedIn) ?
+                  renderedComponent = <SignIn signInHandler={this.signInHandler} />
+                :
+                  renderedComponent = <StoryCreator currentUser={this.state.currentUser}/>
+                return <ClearNavContainer children={renderedComponent}/>
               }}
             />
-            <Route
-              path="/stories/:storyId"
-              render={({match}) => <StoryViewer storyId={match.params.storyId} />}
+            <Route path="/stories/:storyId"
+              render={({match}) => {
+               return <ClearNavContainer children={<StoryViewer storyId={match.params.storyId} />} />
+              }}
             />
-            <Route exact path="/pictures/new" render={() => {
-              if (!this.state.signedIn) {
-                return <SignIn signInHandler={this.signInHandler} />
-              }
-              else {
-                return <PictureCreator currentUser={this.state.currentUser} />
-              }
+            <Route exact path="/pictures/new"
+              render={() => {
+                let renderedComponent ;
+                (!this.state.signedIn) ?
+                  renderedComponent = <SignIn signInHandler={this.signInHandler} />
+                :
+                  renderedComponent = <PictureCreator currentUser={this.state.currentUser} />
+                return <ClearNavContainer children={renderedComponent} />
             }}
             />
-            <Route
-              path="/pictures/:pictureId"
-              render={({match}) => <PictureViewerContainer pictureId={match.params.pictureId}/>}
+            <Route path="/pictures/:pictureId"
+              render={({match}) => {
+                return (<ClearNavContainer
+                  children={<PictureViewerContainer pictureId={match.params.pictureId}/>}
+                />)
+              }}
             />
           </Switch>
         </div>

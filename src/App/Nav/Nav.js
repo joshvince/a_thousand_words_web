@@ -9,7 +9,7 @@ const styles = {
   },
   signInButton: {
     desktop: { margin: '0.2em' },
-    mobile: {} 
+    mobile: {}
   },
   menuItem: {color: "black"}
 }
@@ -19,18 +19,18 @@ const Nav = ({signedIn, currentUser, signOutHandler}) => {
     <Menu borderless fluid fixed="top" size="massive" inverted>
       <Menu.Item>
         <Responsive as={Segment} inverted minWidth={768}>
-          <Header  
-            inverted 
-            content="A Thousand Words" 
+          <Header
+            inverted
+            content="A Thousand Words"
             style={styles.logo.desktop}
             as={Link}
             to="/"
           />
         </Responsive>
         <Responsive as={Segment} inverted maxWidth={768}>
-          <Header  
-            inverted 
-            content="ATW" 
+          <Header
+            inverted
+            content="ATW"
             style={styles.logo.mobile}
             as={Link}
             to="/"
@@ -44,7 +44,7 @@ const Nav = ({signedIn, currentUser, signOutHandler}) => {
         <Link to="/stories/new">New Story</Link>
       </Responsive>
       <Menu.Item position="right">
-        {signedIn ? 
+        {signedIn ?
           <Dropdown item text={currentUser.name} icon="user">
             <Dropdown.Menu>
               <Responsive as={Dropdown.Item} maxWidth={768}>
@@ -57,13 +57,13 @@ const Nav = ({signedIn, currentUser, signOutHandler}) => {
                 Sign Out
               </Dropdown.Item>
             </Dropdown.Menu>
-          </Dropdown> : 
-          <Button 
-            basic 
+          </Dropdown> :
+          <Button
+            basic
             inverted
-            color="green" 
-            size="huge" 
-            content="Sign in" 
+            color="green"
+            size="huge"
+            content="Sign in"
             style={styles.signInButton.desktop}
             as={Link}
             to='/signin'

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Segment, Container, Header } from 'semantic-ui-react';
+import { Segment, Container, Header } from 'semantic-ui-react';
 
 const styles = {
   container: {margin: '5em 0em'},

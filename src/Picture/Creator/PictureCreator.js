@@ -6,7 +6,6 @@ import PictureForm from './Form';
 import PictureApi from '../../Api/PictureApi';
 
 const styles = {
-  pageContainer: {marginTop: '6em'},
   header: {
     header: {
       fontSize: '4em'
@@ -39,7 +38,7 @@ class PictureCreator extends Component {
       if (resp.success) {
         this.setState({
           uploadInProgress: false,
-          uploadSuccess: true, 
+          uploadSuccess: true,
           pictureId: resp.object.uuid
         })
       }
@@ -50,15 +49,15 @@ class PictureCreator extends Component {
         })
       }
     })
-    
+
   }
 
   render() {
     return (
-      <Container style={styles.pageContainer} fluid>
-        {this.state.showUploader ? 
-          <Uploader 
-            isInProgress={this.state.uploadInProgress} 
+      <Container fluid>
+        {this.state.showUploader ?
+          <Uploader
+            isInProgress={this.state.uploadInProgress}
             result={this.state.uploadSuccess}
             redirectRoot="/pictures"
             objectId={this.state.pictureId}
