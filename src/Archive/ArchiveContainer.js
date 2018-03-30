@@ -8,7 +8,7 @@ import PictureApi from '../Api/PictureApi';
 
 const styles = {
   pageContainer: {
-    marginTop: '6em', padding: '2em 0em'
+    padding: '2em 0em'
   },
   pageHeader: {
     fontSize: '3em'
@@ -35,7 +35,7 @@ class ArchiveContainer extends Component {
       displayLoader: false
     })
   }
-    
+
   render() {
     let storyArchive = <StoryArchiveView key={1} storyList={this.state.storyList} />
     let pictureArchive = <PictureArchiveView key={2} pictureList={this.state.pictureList} />
@@ -43,7 +43,7 @@ class ArchiveContainer extends Component {
       {
         menuItem: <Menu.Item key={0}>
                     <Header as='h1' content='Stories'/>
-                  </Menu.Item>, 
+                  </Menu.Item>,
         render: () => <Tab.Pane content={storyArchive}/>
       },
       {

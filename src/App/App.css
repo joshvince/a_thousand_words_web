@@ -1,3 +1,13 @@
 * {
   text-align: center;
 }
+
+.clear-nav-container {
+  margin-top: 6.4em;
+}
+
+@media only screen and (min-width: 768px) {
+  .clear-nav-container {
+    margin-top: 6.9em
+  }
+}

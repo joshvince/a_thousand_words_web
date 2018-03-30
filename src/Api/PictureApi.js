@@ -20,42 +20,16 @@ async function create(file, name, userId) {
   } catch (error) { console.log(`Error fetching the signed request`) }
 }
 
-async function createWithinStory(file, userId){
-  const imageUuid = uuidv4();
-  // Get a presigned URL from the server
-  let s3FileName = buildFileName(file.name, imageUuid)
-  try {
-    const serverResp = await dbServer.getSignedRequest(s3FileName, file.type);
-    // Upload the image to S3
-    try {
-      return await S3Upload(file, serverResp).then(imageUrl => {
-        // Return an object that can be added to the DB as part of the story
-        return {
-          userId: userId,
-          uuid: imageUuid,
-          url: imageUrl
-        }
-      });
-    } 
-    catch (error) {
-      console.log(`Error posting to S3`)
-    }
-  } 
-  catch (error) {
-    console.log(`Error fetching the signed request`)
-  }
-}
-
 async function getOnePicture(pictureId) {
   return await dbServer.getOnePicture(pictureId)
 }
 
 async function getPicturesByUser(userId) {
   return await dbServer.getPicturesByUser(userId)
-} 
+}
 
 /* NOTE:
-This article saved my bacon here: 
+This article saved my bacon here:
 https://devcenter.heroku.com/articles/s3-upload-node#setting-up-the-app-side-node-code
 
 */
@@ -70,8 +44,7 @@ function buildFileName(filename, uuid) {
 const PictureApi = {
   getOnePicture: getOnePicture,
   getPicturesByUser: getPicturesByUser,
-  createPicture: create,
-  createWithinStory: createWithinStory
+  createPicture: create
 }
 
 export default PictureApi;

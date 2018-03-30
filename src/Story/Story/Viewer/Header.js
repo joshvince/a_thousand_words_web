@@ -33,29 +33,17 @@ const styles = {
   }
 }
 
-const StoryHeader = ({title, subtitle, numberOfPics, button}) => {
+const StoryHeader = ({title, subtitle, button}) => {
   return (
     <Segment textAlign="center" inverted vertical style={styles.segment} >
       <Responsive as={Container} minWidth={768}>
         <Header as='h1' content={title} inverted style={styles.title.desktop}/>
         <Header as='h2' content={subtitle} inverted style={styles.subtitle.desktop} />
-        <Header 
-          as='h3' 
-          content={`${numberOfPics} pictures`} 
-          inverted 
-          style={styles.subtitle.desktop} 
-        />
         {button}
       </Responsive>
       <Responsive as={Container} maxWidth={768}>
         <Header as='h1' content={title} inverted style={styles.title.mobile}/>
         <Header as='h2' content={subtitle} inverted style={styles.subtitle.mobile} />
-        <Header 
-          as='h3' 
-          content={`${numberOfPics} pictures`} 
-          inverted 
-          style={styles.subtitle.mobile} 
-        />
         {button}
       </Responsive>
     </Segment>

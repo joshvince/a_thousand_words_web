@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Segment, Container, Header } from 'semantic-ui-react';
+import { Segment, Container, Header } from 'semantic-ui-react';
 
 const styles = {
   container: {margin: '5em 0em'},
@@ -7,18 +7,17 @@ const styles = {
   description: {fontSize: '1.3em'}
 }
 
-const StoryStep = ({step}) => {
+const StoryText = ({storyText}) => {
   return (
     <Container fluid>
-      <Image fluid src={step.image.url} />
       <Segment vertical textAlign="center" style={styles.container}>
-        <Header as="h1" content={step.headline} style={styles.title}/>
-        <Container text>
-          <p style={styles.description}>{step.description}</p>
+        <Header as="h1" content={storyText.headline} style={styles.title}/>
+        <Container text textAlign="center">
+          <p style={styles.description}>{storyText.description}</p>
         </Container>
       </Segment>
     </Container>
   );
 };
 
-export default StoryStep;
+export default StoryText;

@@ -4,12 +4,9 @@ import {Dimmer, Loader} from 'semantic-ui-react';
 import StoryApi from '../../../Api/StoryApi.js';
 
 import StoryHeader from './Header.js';
-import StoryStep from './StoryStep.js';
 import StoryFooter from './Footer.js';
-
-const styles = {
-  pageContainer: {marginTop: '5em'}
-}
+import PictureView from '../../../Picture/Viewer/View';
+import StoryTextView from './StoryTextView';
 
 class StoryViewer extends Component {
   constructor(props){
@@ -25,21 +22,25 @@ class StoryViewer extends Component {
   }
   render() {
     return (
-      <div style={styles.pageContainer}>
+      <div>
         <Dimmer page active={this.state.displayLoader}>
           <Loader size="huge"/>
         </Dimmer>
-        {this.state.displayLoader ? null :
+        {this.state.displayLoader ?
+          null
+          :
           [
-            <StoryHeader 
-              title={this.state.storyData.title} 
-              subtitle={this.state.storyData.subtitle} 
-              numberOfPics={this.state.storyData.steps.length}
+            <StoryHeader
+              title={this.state.storyData.title}
+              subtitle={this.state.storyData.subtitle}
               button={null}
-              key={this.props.storyId} 
+              key={this.props.storyId}
             />,
             this.state.storyData.steps.map((step,i) => {
-              return <StoryStep step={step} key={i}/>
+              return (step.type === 'picture') ?
+                <PictureView picture={step} key={i}/>
+                :
+                <StoryTextView storyText={step} key={i} />
             }),
             <StoryFooter key={999}/>
           ]
