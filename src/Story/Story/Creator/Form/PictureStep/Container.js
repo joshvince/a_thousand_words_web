@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
+import {Segment} from 'semantic-ui-react';
 import PictureSelector from './PictureSelector';
 import PictureView from '../../../../../Picture/Viewer/PictureViewerContainer';
+
+const styles = {
+  container: {
+    margin: '1em'
+  }
+}
 
 class PictureStepContainer extends Component {
   constructor(props){
@@ -42,17 +49,19 @@ class PictureStepContainer extends Component {
   render() {
     const key = this.props.data.stepKey
     return (
-      <div>
-        {this.state.editing ?
-          <PictureSelector
-            stepKey={key}
-            currentUser={this.props.currentUser}
-            onSelect={this.updateData}
-          />
-        :
-          <PictureView pictureId={this.state.data.pictureId} />
+      <div style={styles.container}>
+        <Segment>
+          {this.state.editing ?
+            <PictureSelector
+              stepKey={key}
+              currentUser={this.props.currentUser}
+              onSelect={this.updateData}
+            />
+          :
+            <PictureView pictureId={this.state.data.pictureId} />
 
-        }
+          }
+        </Segment>
       </div>
     );
   }

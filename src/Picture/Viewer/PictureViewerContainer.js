@@ -3,6 +3,13 @@ import {Dimmer, Loader} from 'semantic-ui-react';
 import View from './View';
 import PictureApi from '../../Api/PictureApi';
 
+const styles = {
+  pageContainer: {
+    paddingTop: '1em'
+  }
+}
+
+
 class PictureViewerContainer extends Component {
   constructor(props){
     super(props)
@@ -17,11 +24,11 @@ class PictureViewerContainer extends Component {
   }
   render() {
     return (
-      <div>
+      <div style={styles.pageContainer}>
         <Dimmer page active={this.state.displayLoader}>
           <Loader size="huge"/>
         </Dimmer>
-        {this.state.displayLoader ? null : 
+        {this.state.displayLoader ? null :
           <View picture={this.state.pictureData}/>
         }
       </div>

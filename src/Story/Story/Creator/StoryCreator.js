@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Segment, Button, Header } from 'semantic-ui-react';
+import { Container, Segment, Button, Header, Sticky} from 'semantic-ui-react';
 
 import TextStepContainer from './Form/TextStep/Container';
 import PictureStepContainer from './Form/PictureStep/Container';
@@ -9,7 +9,7 @@ import Uploader from '../../../App/Uploader/Uploader';
 import StoryApi from '../../../Api/StoryApi';
 
 const styles = {
-  pageContainer: {},
+  sectionContainer: {margin: '1em', marginBottom: '2em'},
   header: {
     header: {
       fontSize: '4em'
@@ -18,6 +18,10 @@ const styles = {
       fontSize: '1.6em',
       margin: '1.5em 0'
     }
+  },
+  subheader: {
+    margin: '0.7em',
+    fontSize: '2em'
   }
 }
 
@@ -147,13 +151,12 @@ class StoryCreator extends Component {
           <Header as="h1" content="Create a new story" style={styles.header.header}/>
           <Container text>
             <p style={styles.header.text}>
-              Use pictures and text to tell your story.
-              Create more 'parts' to add more images.
+              Use pictures and text to tell your story.<br/>
               Hit Save when you're finished.
             </p>
           </Container>
         </Segment>
-        <Segment basic vertical>
+        <Segment style={styles.sectionContainer}>
           <HeaderViewHandler submitHandler={this.updateFormData}/>
         </Segment>
         {this.state.steps.map((step, i) => {
@@ -176,9 +179,22 @@ class StoryCreator extends Component {
             />
 
         })}
-        <Button basic onClick={e => this.addNewStep('text')} content="Add new text step"/>
-        <Button basic onClick={e => this.addNewStep('picture')} content="Add new picture step" />
-        <Button basic onClick={e => this.saveStory(e)} content="Save" />
+        <Segment padded="very" style={styles.sectionContainer}>
+          <Header as="h3" style={styles.subheader} content="Add more to your story" />
+          <Button.Group size="massive" primary>
+            <Button icon="write" onClick={e => this.addNewStep('text')}/>
+            <Button.Or color="teal"/>
+            <Button icon="picture" onClick={e => this.addNewStep('picture')}/>
+          </Button.Group>
+
+        </Segment>
+        <Segment basic style={{paddingBottom: '4em'}}>
+          <Header as="h3" style={styles.subheader} content="Finished?" />
+          <Button positive
+            size="massive" onClick={e => this.saveStory(e)}
+            content="Save"
+          />
+        </Segment>
       </div>
 
     );
