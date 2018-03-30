@@ -1,8 +1,9 @@
 import React from 'react';
+import './App.css';
 
 const ClearNavContainer = ({children}) => {
   return (
-    <div style={{marginTop: '6em'}}>
+    <div className="clear-nav-container">
       {children}
     </div>
   );
