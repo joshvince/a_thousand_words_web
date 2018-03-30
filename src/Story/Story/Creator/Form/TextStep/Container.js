@@ -59,7 +59,19 @@ class TextStepContainer extends Component {
           /> :
           [
             <StoryTextView storyText={this.state.data} key={0}/>,
-            <Button content="Edit" onClick={this.toggleEdit} key={1}/>
+            <div>
+              <Button basic
+                size="big"
+                color="red"
+                content="Delete"
+                onClick={this.handleDelete}
+              />
+              <Button basic
+                size="big"
+                content="Edit"
+                onClick={this.toggleEdit} key={1}
+              />
+            </div>
           ]
         }
         </Segment>

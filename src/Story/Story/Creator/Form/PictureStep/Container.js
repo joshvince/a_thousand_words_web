@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import {Segment} from 'semantic-ui-react';
+import {Segment, Button} from 'semantic-ui-react';
 import PictureSelector from './PictureSelector';
 import PictureView from '../../../../../Picture/Viewer/PictureViewerContainer';
 
 const styles = {
   container: {
     margin: '1em'
+  },
+  buttonGroup: {
+    margin: '2em'
   }
 }
 
@@ -49,7 +52,7 @@ class PictureStepContainer extends Component {
   render() {
     const key = this.props.data.stepKey
     return (
-      <div style={styles.container}>
+      <div style={styles.container} ref={el => { this[`el${key}`] = el; }}>
         <Segment>
           {this.state.editing ?
             <PictureSelector
@@ -58,7 +61,13 @@ class PictureStepContainer extends Component {
               onSelect={this.updateData}
             />
           :
-            <PictureView pictureId={this.state.data.pictureId} />
+            [
+              <PictureView pictureId={this.state.data.pictureId} />,
+              <div style={styles.buttonGroup}>
+                  <Button size="big" basic color="red" content="Delete" onClick={this.handleDelete}/>
+                  <Button size="big" basic content="Edit" onClick={this.toggleEdit}/>
+              </div>
+            ]
 
           }
         </Segment>

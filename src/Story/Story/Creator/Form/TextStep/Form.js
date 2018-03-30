@@ -21,14 +21,9 @@ class TextStepForm extends Component {
     this.setState({[name]: value})
   }
 
-  handleSubmit = (e) => { 
+  handleSubmit = (e) => {
     e.preventDefault();
-    this.props.submitHandler(this.state) 
-  }
-
-  handleDelete = (e) => {
-    e.preventDefault();
-    this.props.deleteHandler();
+    this.props.submitHandler(this.state)
   }
 
   render() {
@@ -42,31 +37,20 @@ class TextStepForm extends Component {
             value={this.state.headline}
             onChange={this.handleChange}
           />
-          <Form.TextArea 
-            placeholder="Enter some longer text" 
+          <Form.TextArea
+            placeholder="Enter some longer text"
             name="description"
             value={this.state.description}
             onChange={this.handleChange}
           />
-          <Button.Group>
-            <Form.Button
-              basic
-              color="red"
-              content="Delete this part"
-              size="massive"
-              onClick={this.handleDelete}
-              style={styles.buttons}
-            />
-            <Form.Button
-              basic
-              color="blue" 
-              content="Preview this part"
-              size="massive"
-              onClick={this.handleSubmit} 
-              style={styles.buttons}
-            />
-          </Button.Group>
-          
+          <Form.Button
+            basic
+            color="blue"
+            content="Preview this part"
+            size="huge"
+            onClick={this.handleSubmit}
+            style={styles.buttons}
+          />
         </Form>
       </Container>
     );
